@@ -6,9 +6,9 @@ Venus is a FastAPI microservice that manages Fern's auth (think users, organizat
 
 Venus uses [Fern](https://www.buildwithfern.com/) to manage its API.
 
-With Fern, we define our API in YAML. On the server side, Fern generates
-Pydantic models and FastAPI-compatible abstract classes that ensure we are
-implementing the API correctly. Fern also generates and publishes our SDKs/Client libraries.
+With Fern, you define your API in YAML. On the server side, Fern generates boilerplate like Pydantic models and FastAPI-compatible abstract classes that give you compile time safety when implementing the API. Fern also generates and publishes SDKs/Client Libraries. 
+
+https://user-images.githubusercontent.com/10870189/212732794-4254030e-679d-4fb5-9be9-47afe23f9077.mp4
 
 ## Modifying the API
 
