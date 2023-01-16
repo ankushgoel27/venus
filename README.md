@@ -33,7 +33,7 @@ The generated code will be placed in [src/venus/generated/server](src/venus/gene
 
 With Fern, services are implemented using abstract classes. Simply extend the
 Fern-generated abstract class, and mypy will guide you through implementing the
-API correctly. See the [tags service](src/venus/user_service.py) for
+API correctly. See the [user service](src/venus/user_service.py) for
 an example.
 
 ## Errors
