@@ -1,6 +1,6 @@
 # Venus
 
-Venus is a FastAPI microservice that manages Fern's auth (think users, organizations, tokens).
+Venus is a FastAPI microservice that manages Fern's auth (users, organizations, tokens).
 
 ## 🌿 Fern-managed API
 
