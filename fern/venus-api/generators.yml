@@ -18,12 +18,15 @@ groups:
           username: fern
           password: ${FERN_ORG_TOKEN_PROD}
       - name: fernapi/fern-typescript-sdk
-        version: 0.0.256
+        version: 0.0.260
         output:
           location: npm
           url: npm.buildwithfern.com
           package-name: '@fern-fern/venus-api-sdk'
           token: ${FERN_ORG_TOKEN_PROD}
+        config:
+          useBrandedStringAliases: true
+          neverThrowErrors: true
   docs:
     generators:
       - name: fernapi/fern-postman
