@@ -21,9 +21,8 @@ groups:
         version: 0.0.260
         output:
           location: npm
-          url: npm.buildwithfern.com
-          package-name: '@fern-fern/venus-api-sdk'
-          token: ${FERN_ORG_TOKEN_PROD}
+          package-name: '@fern-api/venus-api-sdk'
+          token: ${FERN_NPM_TOKEN}
         config:
           useBrandedStringAliases: true
           neverThrowErrors: true
