@@ -26,7 +26,7 @@ types:
 services:
   http:
     RegistryService:
-      auth: false # TODO make true
+      auth: true
       base-path: /registry
       endpoints:
         generateRegistryTokens:
@@ -45,6 +45,7 @@ services:
         hasRegistryPermission:
           method: POST
           path: /check-permissions
+          auth: false
           request:
             name: CheckRegistryPermissionRequest
             body:

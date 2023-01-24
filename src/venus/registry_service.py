@@ -4,20 +4,35 @@ from fern.nursery.pydantic.token import RevokeTokenRequest
 
 import venus.generated.server.resources as fern
 
+from venus.auth.auth0_client import Auth0Client
+from venus.generated.server.resources.commons.errors import UnauthorizedError
+from venus.generated.server.security import ApiAuth
+from venus.global_dependencies import get_auth0
 from venus.global_dependencies import get_nursery_client
 from venus.nursery.client import NurseryApiClient
 from venus.nursery.resources.token.types.get_token_metadata_request import (
     GetTokenMetadataRequest,
 )
 from venus.nursery_owner_data import read_nursery_org_data
+from venus.utils import is_member_of_org
 
 
 class RegistryService(fern.AbstractRegistryService):
     def generate_registry_tokens(
         self,
         body: fern.GenerateRegistryTokensRequest,
+        auth: ApiAuth,
         nursery_client: NurseryApiClient = Depends(get_nursery_client),
+        auth0_client: Auth0Client = Depends(get_auth0),
     ) -> fern.RegistryTokens:
+        is_member = is_member_of_org(
+            body.organization_id.get_as_str(),
+            auth,
+            auth0_client,
+            nursery_client,
+        )
+        if not is_member:
+            raise UnauthorizedError()
         create_token_response = nursery_client.token.create(
             body=CreateTokenRequest(
                 owner_id=body.organization_id.get_as_str(), prefix="fern"
@@ -70,8 +85,18 @@ class RegistryService(fern.AbstractRegistryService):
     def revoke_token(
         self,
         body: fern.RevokeTokenRequest,
+        auth: ApiAuth,
         nursery_client: NurseryApiClient = Depends(get_nursery_client),
+        auth0_client: Auth0Client = Depends(get_auth0),
     ) -> None:
+        is_member = is_member_of_org(
+            body.organization_id.get_as_str(),
+            auth,
+            auth0_client,
+            nursery_client,
+        )
+        if not is_member:
+            raise UnauthorizedError()
         nursery_client.token.revoke_token(
             body=RevokeTokenRequest(token=body.token)
         )

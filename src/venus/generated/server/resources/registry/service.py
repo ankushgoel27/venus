@@ -12,6 +12,7 @@ import starlette
 from ...core.abstract_fern_service import AbstractFernService
 from ...core.exceptions.fern_http_exception import FernHTTPException
 from ...core.route_args import get_route_args
+from ...security import ApiAuth, FernAuth
 from ..commons.errors.unauthorized_error import UnauthorizedError
 from .errors.organization_not_found_error import OrganizationNotFoundError
 from .types.check_registry_permission_request import CheckRegistryPermissionRequest
@@ -31,7 +32,7 @@ class AbstractRegistryService(AbstractFernService):
     """
 
     @abc.abstractmethod
-    def generate_registry_tokens(self, *, body: GenerateRegistryTokensRequest) -> RegistryTokens:
+    def generate_registry_tokens(self, *, body: GenerateRegistryTokensRequest, auth: ApiAuth) -> RegistryTokens:
         ...
 
     @abc.abstractmethod
@@ -39,7 +40,7 @@ class AbstractRegistryService(AbstractFernService):
         ...
 
     @abc.abstractmethod
-    def revoke_token(self, *, body: RevokeTokenRequest) -> None:
+    def revoke_token(self, *, body: RevokeTokenRequest, auth: ApiAuth) -> None:
         ...
 
     """
@@ -62,6 +63,8 @@ class AbstractRegistryService(AbstractFernService):
                 new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
             elif parameter_name == "body":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "auth":
+                new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
         setattr(cls.generate_registry_tokens, "__signature__", endpoint_function.replace(parameters=new_parameters))
@@ -138,6 +141,8 @@ class AbstractRegistryService(AbstractFernService):
                 new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
             elif parameter_name == "body":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "auth":
+                new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
         setattr(cls.revoke_token, "__signature__", endpoint_function.replace(parameters=new_parameters))
