@@ -6,11 +6,15 @@ import typing
 import pydantic
 import typing_extensions
 
+from ...commons.types.organization_id import OrganizationId
 
-class NpmRegistryToken(pydantic.BaseModel):
+
+class RevokeTokenRequest(pydantic.BaseModel):
+    organization_id: OrganizationId = pydantic.Field(alias="organizationId")
     token: str
 
     class Partial(typing_extensions.TypedDict):
+        organization_id: typing_extensions.NotRequired[OrganizationId]
         token: typing_extensions.NotRequired[str]
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -23,5 +27,6 @@ class NpmRegistryToken(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: lambda v: v.isoformat()}

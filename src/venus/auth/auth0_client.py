@@ -64,6 +64,7 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
             username=get_user_response["nickname"],
             user_id=get_user_response["user_id"],
             email=get_user_response["email"],
+            created_at=get_user_response["created_at"],
         )
 
     def get_orgs_for_user(self, *, user_id: str) -> typing.Set[str]:

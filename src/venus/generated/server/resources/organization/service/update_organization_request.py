@@ -7,11 +7,11 @@ import pydantic
 import typing_extensions
 
 
-class NpmRegistryToken(pydantic.BaseModel):
-    token: str
+class UpdateOrganizationRequest(pydantic.BaseModel):
+    artifact_read_requires_token: bool = pydantic.Field(alias="artifactReadRequiresToken")
 
     class Partial(typing_extensions.TypedDict):
-        token: typing_extensions.NotRequired[str]
+        artifact_read_requires_token: typing_extensions.NotRequired[bool]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -23,5 +23,6 @@ class NpmRegistryToken(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: lambda v: v.isoformat()}

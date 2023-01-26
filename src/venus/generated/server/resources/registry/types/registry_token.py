@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import typing
 
 import pydantic
@@ -39,51 +40,18 @@ class RegistryToken(pydantic.BaseModel):
         typing.Union[_RegistryToken.Npm, _RegistryToken.Maven], pydantic.Field(discriminator="type")
     ]
 
-    class Validators:
-        """
-        Use this class to add validators to the Pydantic model.
-
-            @RegistryToken.Validators.validate
-            def validate(value: typing.Union[_RegistryToken.Npm, _RegistryToken.Maven]) -> typing.Union[_RegistryToken.Npm, _RegistryToken.Maven]:
-                ...
-        """
-
-        _validators: typing.ClassVar[
-            typing.List[
-                typing.Callable[
-                    [typing.Union[_RegistryToken.Npm, _RegistryToken.Maven]],
-                    typing.Union[_RegistryToken.Npm, _RegistryToken.Maven],
-                ]
-            ]
-        ] = []
-
-        @classmethod
-        def validate(
-            cls,
-            validator: typing.Callable[
-                [typing.Union[_RegistryToken.Npm, _RegistryToken.Maven]],
-                typing.Union[_RegistryToken.Npm, _RegistryToken.Maven],
-            ],
-        ) -> None:
-            cls._validators.append(validator)
-
-    @pydantic.root_validator
-    def _validate(cls, values: typing.Dict[str, typing.Any]) -> typing.Dict[str, typing.Any]:
-        value = typing.cast(typing.Union[_RegistryToken.Npm, _RegistryToken.Maven], values.get("__root__"))
-        for validator in RegistryToken.Validators._validators:
-            value = validator(value)
-        return {**values, "__root__": value}
-
     def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
         return super().json(**kwargs_with_defaults)
 
     def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True
+        extra = pydantic.Extra.forbid
+        json_encoders = {dt.datetime: lambda v: v.isoformat()}
 
 
 class _RegistryToken:
@@ -92,12 +60,14 @@ class _RegistryToken:
 
         class Config:
             frozen = True
+            json_encoders = {dt.datetime: lambda v: v.isoformat()}
 
     class Maven(MavenRegistryToken):
         type: typing_extensions.Literal["maven"]
 
         class Config:
             frozen = True
+            json_encoders = {dt.datetime: lambda v: v.isoformat()}
 
 
 RegistryToken.update_forward_refs()

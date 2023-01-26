@@ -6,12 +6,18 @@ import typing
 import pydantic
 import typing_extensions
 
+from ...commons.types.organization_id import OrganizationId
 
-class NpmRegistryToken(pydantic.BaseModel):
-    token: str
+
+class CreateOrganizationRequest(pydantic.BaseModel):
+    organization_id: OrganizationId = pydantic.Field(alias="organizationId")
+    artifact_read_requires_token: typing.Optional[bool] = pydantic.Field(
+        alias="artifactReadRequiresToken", description=("Defaults to False\n")
+    )
 
     class Partial(typing_extensions.TypedDict):
-        token: typing_extensions.NotRequired[str]
+        organization_id: typing_extensions.NotRequired[OrganizationId]
+        artifact_read_requires_token: typing_extensions.NotRequired[typing.Optional[bool]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
@@ -23,5 +29,6 @@ class NpmRegistryToken(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: lambda v: v.isoformat()}

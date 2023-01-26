@@ -9,17 +9,17 @@ import typing
 import fastapi
 import starlette
 
-from ...core.abstract_fern_service import AbstractFernService
-from ...core.exceptions.fern_http_exception import FernHTTPException
-from ...core.route_args import get_route_args
-from ...security import ApiAuth, FernAuth
-from ..commons.errors.unauthorized_error import UnauthorizedError
-from ..commons.errors.user_id_does_not_exist_error import UserIdDoesNotExistError
-from .errors.organization_already_exists_error import OrganizationAlreadyExistsError
-from .types.add_user_to_org_request import AddUserToOrgRequest
-from .types.create_organization_request import CreateOrganizationRequest
-from .types.organization import Organization
-from .types.update_organization_request import UpdateOrganizationRequest
+from ....core.abstract_fern_service import AbstractFernService
+from ....core.exceptions.fern_http_exception import FernHTTPException
+from ....core.route_args import get_route_args
+from ....security import ApiAuth, FernAuth
+from ...commons.errors.unauthorized_error import UnauthorizedError
+from ...commons.errors.user_id_does_not_exist_error import UserIdDoesNotExistError
+from ..errors.organization_already_exists_error import OrganizationAlreadyExistsError
+from ..types.organization import Organization
+from .add_user_to_org_request import AddUserToOrgRequest
+from .create_organization_request import CreateOrganizationRequest
+from .update_organization_request import UpdateOrganizationRequest
 
 
 class AbstractOrganizationService(AbstractFernService):
@@ -109,7 +109,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/create",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=cls.create.__doc__,
+            description=AbstractOrganizationService.create.__doc__,
             **get_route_args(cls.create, default_tag="organization"),
         )(wrapper)
 
@@ -149,7 +149,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/{org_id}/update",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=cls.update.__doc__,
+            description=AbstractOrganizationService.update.__doc__,
             **get_route_args(cls.update, default_tag="organization"),
         )(wrapper)
 
@@ -187,7 +187,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.get(
             path="/organizations/{org_id}",
             response_model=Organization,
-            description=cls.get.__doc__,
+            description=AbstractOrganizationService.get.__doc__,
             **get_route_args(cls.get, default_tag="organization"),
         )(wrapper)
 
@@ -225,7 +225,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/belongs-to-organization/{organization_id}",
             response_model=bool,
-            description=cls.is_member.__doc__,
+            description=AbstractOrganizationService.is_member.__doc__,
             **get_route_args(cls.is_member, default_tag="organization"),
         )(wrapper)
 
@@ -267,7 +267,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/myself",
             response_model=Organization,
-            description=cls.get_my_organization_from_scoped_token.__doc__,
+            description=AbstractOrganizationService.get_my_organization_from_scoped_token.__doc__,
             **get_route_args(cls.get_my_organization_from_scoped_token, default_tag="organization"),
         )(wrapper)
 
@@ -307,6 +307,6 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/add-user",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=cls.add_user.__doc__,
+            description=AbstractOrganizationService.add_user.__doc__,
             **get_route_args(cls.add_user, default_tag="organization"),
         )(wrapper)

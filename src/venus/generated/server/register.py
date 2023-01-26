@@ -11,9 +11,9 @@ import starlette
 from .core.abstract_fern_service import AbstractFernService
 from .core.exceptions import default_exception_handler, fern_http_exception_handler, http_exception_handler
 from .core.exceptions.fern_http_exception import FernHTTPException
-from .resources.organization.service import AbstractOrganizationService
-from .resources.registry.service import AbstractRegistryService
-from .resources.user.service import AbstractUserService
+from .resources.organization.service.service import AbstractOrganizationService
+from .resources.registry.service.service import AbstractRegistryService
+from .resources.user.service.service import AbstractUserService
 
 
 def register(

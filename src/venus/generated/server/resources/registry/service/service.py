@@ -9,16 +9,16 @@ import typing
 import fastapi
 import starlette
 
-from ...core.abstract_fern_service import AbstractFernService
-from ...core.exceptions.fern_http_exception import FernHTTPException
-from ...core.route_args import get_route_args
-from ...security import ApiAuth, FernAuth
-from ..commons.errors.unauthorized_error import UnauthorizedError
-from .errors.organization_not_found_error import OrganizationNotFoundError
-from .types.check_registry_permission_request import CheckRegistryPermissionRequest
-from .types.generate_registry_tokens_request import GenerateRegistryTokensRequest
-from .types.registry_tokens import RegistryTokens
-from .types.revoke_token_request import RevokeTokenRequest
+from ....core.abstract_fern_service import AbstractFernService
+from ....core.exceptions.fern_http_exception import FernHTTPException
+from ....core.route_args import get_route_args
+from ....security import ApiAuth, FernAuth
+from ...commons.errors.unauthorized_error import UnauthorizedError
+from ..errors.organization_not_found_error import OrganizationNotFoundError
+from ..types.registry_tokens import RegistryTokens
+from .check_registry_permission_request import CheckRegistryPermissionRequest
+from .generate_registry_tokens_request import GenerateRegistryTokensRequest
+from .revoke_token_request import RevokeTokenRequest
 
 
 class AbstractRegistryService(AbstractFernService):
@@ -90,7 +90,7 @@ class AbstractRegistryService(AbstractFernService):
         router.post(
             path="/registry/generate-tokens",
             response_model=RegistryTokens,
-            description=cls.generate_registry_tokens.__doc__,
+            description=AbstractRegistryService.generate_registry_tokens.__doc__,
             **get_route_args(cls.generate_registry_tokens, default_tag="registry"),
         )(wrapper)
 
@@ -128,7 +128,7 @@ class AbstractRegistryService(AbstractFernService):
         router.post(
             path="/registry/check-permissions",
             response_model=bool,
-            description=cls.has_registry_permission.__doc__,
+            description=AbstractRegistryService.has_registry_permission.__doc__,
             **get_route_args(cls.has_registry_permission, default_tag="registry"),
         )(wrapper)
 
@@ -168,6 +168,6 @@ class AbstractRegistryService(AbstractFernService):
         router.post(
             path="/registry/revoke-token",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=cls.revoke_token.__doc__,
+            description=AbstractRegistryService.revoke_token.__doc__,
             **get_route_args(cls.revoke_token, default_tag="registry"),
         )(wrapper)

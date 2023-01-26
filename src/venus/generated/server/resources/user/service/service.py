@@ -8,12 +8,12 @@ import typing
 
 import fastapi
 
-from ...core.abstract_fern_service import AbstractFernService
-from ...core.exceptions.fern_http_exception import FernHTTPException
-from ...core.route_args import get_route_args
-from ...security import ApiAuth, FernAuth
-from .types.organizations_page import OrganizationsPage
-from .types.user import User
+from ....core.abstract_fern_service import AbstractFernService
+from ....core.exceptions.fern_http_exception import FernHTTPException
+from ....core.route_args import get_route_args
+from ....security import ApiAuth, FernAuth
+from ..types.organizations_page import OrganizationsPage
+from ..types.user import User
 
 
 class AbstractUserService(AbstractFernService):
@@ -76,7 +76,7 @@ class AbstractUserService(AbstractFernService):
         router.get(
             path="/users",
             response_model=User,
-            description=cls.get_myself.__doc__,
+            description=AbstractUserService.get_myself.__doc__,
             **get_route_args(cls.get_myself, default_tag="user"),
         )(wrapper)
 
@@ -114,6 +114,6 @@ class AbstractUserService(AbstractFernService):
         router.get(
             path="/users/organizations",
             response_model=OrganizationsPage,
-            description=cls.get_my_organizations.__doc__,
+            description=AbstractUserService.get_my_organizations.__doc__,
             **get_route_args(cls.get_my_organizations, default_tag="user"),
         )(wrapper)

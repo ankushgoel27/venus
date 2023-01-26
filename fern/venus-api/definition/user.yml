@@ -9,6 +9,7 @@ types:
       userId: commons.UserId
       username: string
       email: optional<string>
+      created_at: optional<datetime>
 
   OrganizationsPage:
     properties:
