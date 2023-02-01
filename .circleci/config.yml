@@ -172,6 +172,7 @@ workflows:
             - github
             - fern-dev
             - venus-dev
+            - posthog
           requires:
             - check
             - test
