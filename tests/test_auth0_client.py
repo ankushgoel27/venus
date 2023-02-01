@@ -63,6 +63,6 @@ def test_auth0_get_user_orgs() -> None:
 @pytest.mark.skip(reason="requires hitting auth0")
 def test_auth0_get_all_users() -> None:
     auth0_client = Auth0Client(config=VENUS_CONFIG)
-    user_generator = auth0_client.get().get_all_users()
+    user_generator = auth0_client.get().get_all_raw_users()
     for user in user_generator:
         print(user)

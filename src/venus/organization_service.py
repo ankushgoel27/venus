@@ -11,6 +11,7 @@ from venus.generated.server.resources.organization import Organization
 from venus.generated.server.security import ApiAuth
 from venus.global_dependencies import get_auth0
 from venus.global_dependencies import get_nursery_client
+from venus.global_dependencies import get_posthog_identity_updater
 from venus.nursery.client import NurseryApiClient
 from venus.nursery.resources import CreateOwnerRequest
 from venus.nursery.resources.owner.types.update_owner_request import (
@@ -18,6 +19,7 @@ from venus.nursery.resources.owner.types.update_owner_request import (
 )
 from venus.nursery_owner_data import NurseryOrgData
 from venus.nursery_owner_data import read_nursery_org_data
+from venus.posthog_identity_updater import PosthogIdentityUpdater
 from venus.utils import get_nursery_owner
 from venus.utils import get_owner
 from venus.utils import get_owner_id_from_token
@@ -35,6 +37,9 @@ class OrganizationsService(fern.AbstractOrganizationService):
         auth: ApiAuth,
         auth0_client: Auth0Client = Depends(get_auth0),
         nursery_client: NurseryApiClient = Depends(get_nursery_client),
+        posthog_identity_updater: PosthogIdentityUpdater = Depends(
+            get_posthog_identity_updater
+        ),
     ) -> None:
         user_id = auth0_client.get_user_id_from_token(auth.token)
         auth0_org_id = auth0_client.get().create_organization(
@@ -50,6 +55,7 @@ class OrganizationsService(fern.AbstractOrganizationService):
         auth0_client.get().add_user_to_org(
             user_id=user_id, org_id=auth0_org_id
         )
+        posthog_identity_updater.update_identity(user_id=user_id)
 
     def update(
         self,

@@ -32,6 +32,10 @@ class AbstractVenusAuth0Client(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def get_raw_user(self, *, user_id: str) -> typing.Any:
+        raise NotImplementedError
+
+    @abstractmethod
     def get_orgs_for_user(self, *, user_id: str) -> typing.Set[str]:
         raise NotImplementedError
 
@@ -40,7 +44,7 @@ class AbstractVenusAuth0Client(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_all_users(self) -> typing.Generator[typing.Any, None, None]:
+    def get_all_raw_users(self) -> typing.Generator[typing.Any, None, None]:
         raise NotImplementedError
 
 
@@ -72,6 +76,9 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
             created_at=get_user_response["created_at"],
         )
 
+    def get_raw_user(self, *, user_id: str) -> typing.Any:
+        return self.auth0.users.get(user_id)
+
     def get_orgs_for_user(self, *, user_id: str) -> typing.Set[str]:
         # TODO(dsinghvi): Fix, page through all orgs
         list_organizatins_response = self.auth0.users.list_organizations(
@@ -87,7 +94,7 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
             org_id, {"members": [user_id]}
         )
 
-    def get_all_users(self) -> typing.Generator[typing.Any, None, None]:
+    def get_all_raw_users(self) -> typing.Generator[typing.Any, None, None]:
         users_list = self.auth0.users.list()
         total_users = users_list["total"]
         page_size = users_list["length"]

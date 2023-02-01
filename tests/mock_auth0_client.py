@@ -25,6 +25,9 @@ class MockVenusAuth0Client(AbstractVenusAuth0Client):
     def get_user(self, *, user_id: str) -> User:
         return super().get_user(user_id=user_id)
 
+    def get_raw_user(self, *, user_id: str) -> typing.Any:
+        return None
+
     def get_orgs_for_user(self, *, user_id: str) -> typing.Set[str]:
         return set(auth0_org_id_to_members.keys())
 
@@ -33,7 +36,7 @@ class MockVenusAuth0Client(AbstractVenusAuth0Client):
             auth0_org_id_to_members[org_id].append(user_id)
         print(f"Org id {org_id} not in created orgs")
 
-    def get_all_users(self) -> typing.Generator[typing.Any, None, None]:
+    def get_all_raw_users(self) -> typing.Generator[typing.Any, None, None]:
         yield None
 
 
