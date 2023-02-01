@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 
 from dataclasses import dataclass
+from typing import Optional
 
 
 AUTH0_DOMAIN_NAME_ENV_VAR = "AUTH0_DOMAIN_NAME"
@@ -11,6 +12,7 @@ AUTH0_CLIENT_SECRET_ENV_VAR = "AUTH0_CLIENT_SECRET"
 AUTH0_MGMT_AUDIENCE_ENV_VAR = "AUTH0_MGMT_AUDIENCE"
 AUTH0_VENUS_AUDIENCE_ENV_VAR = "AUTH0_VENUS_AUDIENCE"
 NURSERY_ORIGIN_ENV_VAR = "NURSERY_ORIGIN"
+POSTHOG_API_KEY_ENV_VAR = "POSTHOG_API_KEY"
 
 
 @dataclass
@@ -21,6 +23,7 @@ class VenusConfig:
     auth0_mgmt_audience: str
     auth0_venus_audience: str
     nursery_origin: str
+    posthog_api_key: Optional[str]
 
     @staticmethod
     def __get_env_var_or_throw(env_var: str) -> str:
@@ -50,4 +53,5 @@ class VenusConfig:
             nursery_origin=VenusConfig.__get_env_var_or_throw(
                 NURSERY_ORIGIN_ENV_VAR
             ),
+            posthog_api_key=os.getenv(POSTHOG_API_KEY_ENV_VAR),
         )

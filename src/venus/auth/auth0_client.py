@@ -1,3 +1,4 @@
+import math
 import traceback
 import typing
 
@@ -36,6 +37,10 @@ class AbstractVenusAuth0Client(ABC):
 
     @abstractmethod
     def add_user_to_org(self, *, user_id: str, org_id: str) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_all_users(self) -> typing.Generator[typing.Any, None, None]:
         raise NotImplementedError
 
 
@@ -81,6 +86,17 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
         self.auth0.organizations.create_organization_members(
             org_id, {"members": [user_id]}
         )
+
+    def get_all_users(self) -> typing.Generator[typing.Any, None, None]:
+        users_list = self.auth0.users.list()
+        total_users = users_list["total"]
+        page_size = users_list["length"]
+        for u in users_list["users"]:
+            yield u
+        del users_list
+        for page in range(1, math.ceil(total_users / page_size)):
+            for u in self.auth0.users.list(page=page)["users"]:
+                yield u
 
 
 class AbstractAuth0Client(ABC):

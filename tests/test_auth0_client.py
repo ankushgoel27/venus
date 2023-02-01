@@ -15,6 +15,7 @@ VENUS_CONFIG = VenusConfig(
     auth0_mgmt_audience="https://fern-dev.us.auth0.com/api/v2/",
     auth0_venus_audience="venus-dev",
     nursery_origin="fake",
+    posthog_api_key=None,
 )
 
 
@@ -57,3 +58,11 @@ def test_auth0_get_user_orgs() -> None:
     auth0_client = Auth0Client(config=VENUS_CONFIG)
     orgs = auth0_client.get().get_orgs_for_user(user_id=user_id)
     print(orgs)
+
+
+@pytest.mark.skip(reason="requires hitting auth0")
+def test_auth0_get_all_users() -> None:
+    auth0_client = Auth0Client(config=VENUS_CONFIG)
+    user_generator = auth0_client.get().get_all_users()
+    for user in user_generator:
+        print(user)

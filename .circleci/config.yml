@@ -188,6 +188,7 @@ workflows:
             - github
             - fern-prod
             - venus-prod
+            - posthog
           requires:
             - check
             - test

@@ -1,9 +1,12 @@
+import asyncio
+
 import uvicorn
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from venus.generated.server.register import register
+from venus.global_dependencies import get_posthog_identity_updater
 from venus.organization_service import OrganizationsService
 from venus.registry_service import RegistryService
 from venus.user_service import UserService
@@ -30,6 +33,11 @@ register(
 @app.get("/health")
 def health() -> None:
     pass
+
+
+@app.on_event("startup")
+async def app_startup() -> None:
+    asyncio.create_task(get_posthog_identity_updater().update_identities())
 
 
 def start() -> None:

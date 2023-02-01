@@ -23,6 +23,7 @@ export interface VenusEnvVariables {
   NURSERY_ORIGIN: string;
   AUTH0_MGMT_AUDIENCE: string;
   AUTH0_VENUS_AUDIENCE: string;
+  POSTHOG_API_KEY?: string;
 }
 
 export class VenusDeployStack extends Stack {

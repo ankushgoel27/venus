@@ -55,6 +55,7 @@ async function main() {
             AUTH0_MGMT_AUDIENCE: "https://fern-prod.us.auth0.com/api/v2/",
             NURSERY_ORIGIN: `http://nursery.${prodInfo.cloudMapNamespaceInfo.namespaceName}:8080`,
             AUTH0_VENUS_AUDIENCE: "venus-prod",
+            POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
           },
           {
             env: { account: "985111089818", region: "us-east-1" },
