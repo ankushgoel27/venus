@@ -22,4 +22,4 @@ class PosthogIdentityUpdater:
     def update_identity(self, user_id: str) -> None:
         if self.sync_to_posthog:
             user = self.auth0.get().get_user(user_id=user_id)
-            posthog.identify(user_id, user)
+            posthog.identify(user_id, user.dict())
