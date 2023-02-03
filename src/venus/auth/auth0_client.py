@@ -57,15 +57,16 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
             create_auth0_organization_response = (
                 self.auth0.organizations.create_organization({"name": org_id})
             )
+            print(
+                "Created organization in auth0. Received response: ",
+                create_auth0_organization_response,
+            )
+            return create_auth0_organization_response["id"]
         except Auth0Error as e:
             if e.status_code == 409:
                 print(f"An organization with name {org_id} already exists")
                 raise OrganizationAlreadyExistsError()
-        print(
-            "Created organization in auth0. Received response: ",
-            create_auth0_organization_response,
-        )
-        return create_auth0_organization_response["id"]
+            raise e
 
     def get_user(self, *, user_id: str) -> User:
         get_user_response = self.auth0.users.get(user_id)
