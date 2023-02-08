@@ -16,13 +16,11 @@ groups:
           url: maven.buildwithfern.com
           coordinate: com.fern.fern:venus-api-sdk
           username: fern
-          password: ${FERN_ORG_TOKEN_PROD}
       - name: fernapi/fern-typescript-sdk
         version: 0.0.260
         output:
           location: npm
           package-name: '@fern-api/venus-api-sdk'
-          token: ${FERN_NPM_TOKEN}
         config:
           useBrandedStringAliases: true
           neverThrowErrors: true
