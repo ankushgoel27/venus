@@ -1,8 +1,13 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
 types:
   OrganizationId: string
+
   UserId: string
+
 errors:
   UserIdDoesNotExistError:
     status-code: 404
+
   UnauthorizedError:
     status-code: 401

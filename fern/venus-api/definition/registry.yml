@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
 imports:
   commons: commons.yml
 
 types:
-
   RegistryTokens:
     properties:
       npm: NpmRegistryToken
@@ -23,52 +23,50 @@ types:
       npm: NpmRegistryToken
       maven: MavenRegistryToken
 
-services:
-  http:
-    RegistryService:
-      auth: true
-      base-path: /registry
-      endpoints:
-        generateRegistryTokens:
-          method: POST
-          path: /generate-tokens
-          request:
-            name: GenerateRegistryTokensRequest
-            body:
-              properties:
-                organizationId: commons.OrganizationId
-          response: RegistryTokens
-          errors:
-            - commons.UnauthorizedError
-            - OrganizationNotFoundError
+service:
+  auth: true
+  base-path: /registry
+  endpoints:
+    generateRegistryTokens:
+      method: POST
+      path: /generate-tokens
+      request:
+        name: GenerateRegistryTokensRequest
+        body:
+          properties:
+            organizationId: commons.OrganizationId
+      response: RegistryTokens
+      errors:
+        - commons.UnauthorizedError
+        - OrganizationNotFoundError
 
-        hasRegistryPermission:
-          method: POST
-          path: /check-permissions
-          auth: false
-          request:
-            name: CheckRegistryPermissionRequest
-            body:
-              properties:
-                organizationId: commons.OrganizationId
-                token: optional<RegistryToken>
-          response: boolean
-          errors:
-            - commons.UnauthorizedError
-            - OrganizationNotFoundError
+    hasRegistryPermission:
+      method: POST
+      path: /check-permissions
+      auth: false
+      request:
+        name: CheckRegistryPermissionRequest
+        body:
+          properties:
+            organizationId: commons.OrganizationId
+            token: optional<RegistryToken>
+      response: boolean
+      errors:
+        - commons.UnauthorizedError
+        - OrganizationNotFoundError
 
-        revokeToken:
-          method: POST
-          path: /revoke-token
-          request:
-            name: RevokeTokenRequest
-            body:
-              properties:
-                organizationId: commons.OrganizationId
-                token: string
-          errors:
-            - commons.UnauthorizedError
-            - OrganizationNotFoundError
+    revokeToken:
+      method: POST
+      path: /revoke-token
+      request:
+        name: RevokeTokenRequest
+        body:
+          properties:
+            organizationId: commons.OrganizationId
+            token: string
+      errors:
+        - commons.UnauthorizedError
+        - OrganizationNotFoundError
 
 errors:
   OrganizationNotFoundError:

@@ -16,26 +16,23 @@ types:
       organizations: list<commons.OrganizationId>
       nextPage: optional<integer>
 
-services:
-  http:
-    UserService:
-      auth: true
-      base-path: /users
-      endpoints:
+service:
+  auth: true
+  base-path: /users
+  endpoints:
+    getMyself:
+      method: GET
+      path: ""
+      response: User
 
-        getMyself:
-          method: GET
-          path: ""
-          response: User
-
-        getMyOrganizations:
-          method: GET
-          path: /organizations
-          response: OrganizationsPage
-          request:
-            name: GetUserOrganizationsRequest
-            query-parameters:
-              pageId: integer
+    getMyOrganizations:
+      method: GET
+      path: /organizations
+      response: OrganizationsPage
+      request:
+        name: GetUserOrganizationsRequest
+        query-parameters:
+          pageId: integer
 
 errors:
   UserAleadyExistsError:
