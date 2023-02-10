@@ -3,10 +3,10 @@
 from .check_registry_permission_request import CheckRegistryPermissionRequest
 from .generate_registry_tokens_request import GenerateRegistryTokensRequest
 from .revoke_token_request import RevokeTokenRequest
-from .service import AbstractRegistryService
+from .service import AbstractregistryService
 
 __all__ = [
-    "AbstractRegistryService",
+    "AbstractregistryService",
     "CheckRegistryPermissionRequest",
     "GenerateRegistryTokensRequest",
     "RevokeTokenRequest",

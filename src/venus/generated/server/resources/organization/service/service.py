@@ -22,9 +22,9 @@ from .create_organization_request import CreateOrganizationRequest
 from .update_organization_request import UpdateOrganizationRequest
 
 
-class AbstractOrganizationService(AbstractFernService):
+class AbstractorganizationService(AbstractFernService):
     """
-    AbstractOrganizationService is an abstract class containing the methods that your
+    AbstractorganizationService is an abstract class containing the methods that your
     OrganizationService implementation should implement.
 
     Each method is associated with an API route, which will be registered
@@ -109,7 +109,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/create",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=AbstractOrganizationService.create.__doc__,
+            description=AbstractorganizationService.create.__doc__,
             **get_route_args(cls.create, default_tag="organization"),
         )(wrapper)
 
@@ -149,7 +149,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/{org_id}/update",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=AbstractOrganizationService.update.__doc__,
+            description=AbstractorganizationService.update.__doc__,
             **get_route_args(cls.update, default_tag="organization"),
         )(wrapper)
 
@@ -187,7 +187,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.get(
             path="/organizations/{org_id}",
             response_model=Organization,
-            description=AbstractOrganizationService.get.__doc__,
+            description=AbstractorganizationService.get.__doc__,
             **get_route_args(cls.get, default_tag="organization"),
         )(wrapper)
 
@@ -225,7 +225,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/belongs-to-organization/{organization_id}",
             response_model=bool,
-            description=AbstractOrganizationService.is_member.__doc__,
+            description=AbstractorganizationService.is_member.__doc__,
             **get_route_args(cls.is_member, default_tag="organization"),
         )(wrapper)
 
@@ -267,7 +267,7 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/myself",
             response_model=Organization,
-            description=AbstractOrganizationService.get_my_organization_from_scoped_token.__doc__,
+            description=AbstractorganizationService.get_my_organization_from_scoped_token.__doc__,
             **get_route_args(cls.get_my_organization_from_scoped_token, default_tag="organization"),
         )(wrapper)
 
@@ -307,6 +307,6 @@ class AbstractOrganizationService(AbstractFernService):
         router.post(
             path="/organizations/add-user",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=AbstractOrganizationService.add_user.__doc__,
+            description=AbstractorganizationService.add_user.__doc__,
             **get_route_args(cls.add_user, default_tag="organization"),
         )(wrapper)

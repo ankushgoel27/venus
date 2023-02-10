@@ -11,17 +11,17 @@ import starlette
 from .core.abstract_fern_service import AbstractFernService
 from .core.exceptions import default_exception_handler, fern_http_exception_handler, http_exception_handler
 from .core.exceptions.fern_http_exception import FernHTTPException
-from .resources.organization.service.service import AbstractOrganizationService
-from .resources.registry.service.service import AbstractRegistryService
-from .resources.user.service.service import AbstractUserService
+from .resources.organization.service.service import AbstractorganizationService
+from .resources.registry.service.service import AbstractregistryService
+from .resources.user.service.service import AbstractuserService
 
 
 def register(
     app: fastapi.FastAPI,
     *,
-    organization: AbstractOrganizationService,
-    registry: AbstractRegistryService,
-    user: AbstractUserService
+    organization: AbstractorganizationService,
+    registry: AbstractregistryService,
+    user: AbstractuserService
 ) -> None:
     app.include_router(__register_service(organization))
     app.include_router(__register_service(registry))

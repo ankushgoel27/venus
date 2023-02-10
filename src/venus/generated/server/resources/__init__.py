@@ -2,7 +2,7 @@
 
 from .commons import OrganizationId, UnauthorizedError, UserId, UserIdDoesNotExistError
 from .organization import (
-    AbstractOrganizationService,
+    AbstractorganizationService,
     AddUserToOrgRequest,
     CreateOrganizationRequest,
     Organization,
@@ -10,7 +10,7 @@ from .organization import (
     UpdateOrganizationRequest,
 )
 from .registry import (
-    AbstractRegistryService,
+    AbstractregistryService,
     CheckRegistryPermissionRequest,
     GenerateRegistryTokensRequest,
     MavenRegistryToken,
@@ -20,12 +20,12 @@ from .registry import (
     RegistryTokens,
     RevokeTokenRequest,
 )
-from .user import AbstractUserService, OrganizationsPage, User, UserAleadyExistsError
+from .user import AbstractuserService, OrganizationsPage, User, UserAleadyExistsError
 
 __all__ = [
-    "AbstractOrganizationService",
-    "AbstractRegistryService",
-    "AbstractUserService",
+    "AbstractorganizationService",
+    "AbstractregistryService",
+    "AbstractuserService",
     "AddUserToOrgRequest",
     "CheckRegistryPermissionRequest",
     "CreateOrganizationRequest",

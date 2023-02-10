@@ -16,9 +16,9 @@ from ..types.organizations_page import OrganizationsPage
 from ..types.user import User
 
 
-class AbstractUserService(AbstractFernService):
+class AbstractuserService(AbstractFernService):
     """
-    AbstractUserService is an abstract class containing the methods that your
+    AbstractuserService is an abstract class containing the methods that your
     UserService implementation should implement.
 
     Each method is associated with an API route, which will be registered
@@ -76,7 +76,7 @@ class AbstractUserService(AbstractFernService):
         router.get(
             path="/users",
             response_model=User,
-            description=AbstractUserService.get_myself.__doc__,
+            description=AbstractuserService.get_myself.__doc__,
             **get_route_args(cls.get_myself, default_tag="user"),
         )(wrapper)
 
@@ -114,6 +114,6 @@ class AbstractUserService(AbstractFernService):
         router.get(
             path="/users/organizations",
             response_model=OrganizationsPage,
-            description=AbstractUserService.get_my_organizations.__doc__,
+            description=AbstractuserService.get_my_organizations.__doc__,
             **get_route_args(cls.get_my_organizations, default_tag="user"),
         )(wrapper)

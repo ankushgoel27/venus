@@ -2,11 +2,11 @@
 
 from .add_user_to_org_request import AddUserToOrgRequest
 from .create_organization_request import CreateOrganizationRequest
-from .service import AbstractOrganizationService
+from .service import AbstractorganizationService
 from .update_organization_request import UpdateOrganizationRequest
 
 __all__ = [
-    "AbstractOrganizationService",
+    "AbstractorganizationService",
     "AddUserToOrgRequest",
     "CreateOrganizationRequest",
     "UpdateOrganizationRequest",

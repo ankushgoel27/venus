@@ -21,9 +21,9 @@ from .generate_registry_tokens_request import GenerateRegistryTokensRequest
 from .revoke_token_request import RevokeTokenRequest
 
 
-class AbstractRegistryService(AbstractFernService):
+class AbstractregistryService(AbstractFernService):
     """
-    AbstractRegistryService is an abstract class containing the methods that your
+    AbstractregistryService is an abstract class containing the methods that your
     RegistryService implementation should implement.
 
     Each method is associated with an API route, which will be registered
@@ -90,7 +90,7 @@ class AbstractRegistryService(AbstractFernService):
         router.post(
             path="/registry/generate-tokens",
             response_model=RegistryTokens,
-            description=AbstractRegistryService.generate_registry_tokens.__doc__,
+            description=AbstractregistryService.generate_registry_tokens.__doc__,
             **get_route_args(cls.generate_registry_tokens, default_tag="registry"),
         )(wrapper)
 
@@ -128,7 +128,7 @@ class AbstractRegistryService(AbstractFernService):
         router.post(
             path="/registry/check-permissions",
             response_model=bool,
-            description=AbstractRegistryService.has_registry_permission.__doc__,
+            description=AbstractregistryService.has_registry_permission.__doc__,
             **get_route_args(cls.has_registry_permission, default_tag="registry"),
         )(wrapper)
 
@@ -168,6 +168,6 @@ class AbstractRegistryService(AbstractFernService):
         router.post(
             path="/registry/revoke-token",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=AbstractRegistryService.revoke_token.__doc__,
+            description=AbstractregistryService.revoke_token.__doc__,
             **get_route_args(cls.revoke_token, default_tag="registry"),
         )(wrapper)

@@ -2,7 +2,7 @@
 
 from .errors import OrganizationAlreadyExistsError
 from .service import (
-    AbstractOrganizationService,
+    AbstractorganizationService,
     AddUserToOrgRequest,
     CreateOrganizationRequest,
     UpdateOrganizationRequest,
@@ -10,7 +10,7 @@ from .service import (
 from .types import Organization
 
 __all__ = [
-    "AbstractOrganizationService",
+    "AbstractorganizationService",
     "AddUserToOrgRequest",
     "CreateOrganizationRequest",
     "Organization",
