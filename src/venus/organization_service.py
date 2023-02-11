@@ -8,6 +8,9 @@ from venus.auth.auth0_client import Auth0Client
 from venus.generated.server.resources.commons import UnauthorizedError
 from venus.generated.server.resources.organization import AddUserToOrgRequest
 from venus.generated.server.resources.organization import Organization
+from venus.generated.server.resources.organization.service.service import (
+    AbstractOrganizationService,
+)
 from venus.generated.server.security import ApiAuth
 from venus.global_dependencies import get_auth0
 from venus.global_dependencies import get_nursery_client
@@ -29,7 +32,7 @@ from venus.utils import is_member_of_org
 logger = logging.getLogger(__name__)
 
 
-class OrganizationsService(fern.AbstractOrganizationService):
+class OrganizationsService(AbstractOrganizationService):
     def create(
         self,
         *,

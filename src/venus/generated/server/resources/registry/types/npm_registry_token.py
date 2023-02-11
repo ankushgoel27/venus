@@ -6,6 +6,8 @@ import typing
 import pydantic
 import typing_extensions
 
+from ....core.datetime_utils import serialize_datetime
+
 
 class NpmRegistryToken(pydantic.BaseModel):
     token: str
@@ -24,4 +26,4 @@ class NpmRegistryToken(pydantic.BaseModel):
     class Config:
         frozen = True
         extra = pydantic.Extra.forbid
-        json_encoders = {dt.datetime: lambda v: v.isoformat()}
+        json_encoders = {dt.datetime: serialize_datetime}

@@ -3,7 +3,7 @@ groups:
   server:
     generators:
       - name: fernapi/fern-fastapi-server
-        version: 0.0.43-1-gf231484
+        version: 0.0.48
         output:
           location: local-file-system
           path: ../../src/venus/generated/server
@@ -17,10 +17,11 @@ groups:
           coordinate: com.fern.fern:venus-api-sdk
           username: fern
       - name: fernapi/fern-typescript-sdk
-        version: 0.0.260
+        version: 0.0.279
         output:
           location: npm
           package-name: '@fern-api/venus-api-sdk'
+          token: ${FERN_NPM_TOKEN}
         config:
           useBrandedStringAliases: true
           neverThrowErrors: true

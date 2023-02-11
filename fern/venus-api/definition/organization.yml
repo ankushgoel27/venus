@@ -9,82 +9,80 @@ types:
       organizationId: commons.OrganizationId
       artifactReadRequiresToken: boolean
 
-services:
-  http:
-    OrganizationService:
-      auth: false # TODO make true
-      base-path: /organizations
-      endpoints:
-        create:
-          method: POST
-          path: /create
-          auth: true
-          request:
-            name: CreateOrganizationRequest
-            body:
-              properties:
-                organizationId: commons.OrganizationId
-                artifactReadRequiresToken:
-                  type: optional<boolean>
-                  docs: Defaults to False
-          errors:
-            - commons.UnauthorizedError
-            - OrganizationAlreadyExistsError
-
-        update:
-          method: POST
-          path: /{orgId}/update
-          path-parameters:
-            orgId: commons.OrganizationId
-          request:
-            name: UpdateOrganizationRequest
-            body:
-              properties:
-                artifactReadRequiresToken: boolean
-          errors:
-            - commons.UnauthorizedError
-
-        get:
-          method: GET
-          path: /{orgId}
-          path-parameters:
-            orgId: commons.OrganizationId
-          response: Organization
-          errors:
-            - commons.UnauthorizedError
-
-        isMember:
-          method: POST
-          auth: true
-          path: /belongs-to-organization/{organizationId}
-          path-parameters:
+service:
+  auth: false # TODO make true
+  base-path: /organizations
+  endpoints:
+    create:
+      method: POST
+      path: /create
+      auth: true
+      request:
+        name: CreateOrganizationRequest
+        body:
+          properties:
             organizationId: commons.OrganizationId
-          response: boolean
+            artifactReadRequiresToken:
+              type: optional<boolean>
+              docs: Defaults to False
+      errors:
+        - commons.UnauthorizedError
+        - OrganizationAlreadyExistsError
 
-        getMyOrganizationFromScopedToken:
-          availability: deprecated
-          method: POST
-          path: /myself
-          docs: Returns the org for a scoped token. The token is limited to one
-            organization.
-          auth: true
-          response: Organization
-          errors:
-            - commons.UnauthorizedError
+    update:
+      method: POST
+      path: /{orgId}/update
+      path-parameters:
+        orgId: commons.OrganizationId
+      request:
+        name: UpdateOrganizationRequest
+        body:
+          properties:
+            artifactReadRequiresToken: boolean
+      errors:
+        - commons.UnauthorizedError
 
-        addUser:
-          method: POST
-          path: /add-user
-          auth: true
-          request:
-            name: AddUserToOrgRequest
-            body:
-              properties:
-                userId: commons.UserId
-                orgId: commons.OrganizationId
-          errors:
-            - commons.UnauthorizedError
-            - commons.UserIdDoesNotExistError
+    get:
+      method: GET
+      path: /{orgId}
+      path-parameters:
+        orgId: commons.OrganizationId
+      response: Organization
+      errors:
+        - commons.UnauthorizedError
+
+    isMember:
+      method: POST
+      auth: true
+      path: /belongs-to-organization/{organizationId}
+      path-parameters:
+        organizationId: commons.OrganizationId
+      response: boolean
+
+    getMyOrganizationFromScopedToken:
+      availability: deprecated
+      method: POST
+      path: /myself
+      docs: Returns the org for a scoped token. The token is limited to one
+        organization.
+      auth: true
+      response: Organization
+      errors:
+        - commons.UnauthorizedError
+
+    addUser:
+      method: POST
+      path: /add-user
+      auth: true
+      request:
+        name: AddUserToOrgRequest
+        body:
+          properties:
+            userId: commons.UserId
+            orgId: commons.OrganizationId
+      errors:
+        - commons.UnauthorizedError
+        - commons.UserIdDoesNotExistError
 
 errors:
   OrganizationAlreadyExistsError:

@@ -6,6 +6,9 @@ import venus.generated.server.resources as fern
 
 from venus.auth.auth0_client import Auth0Client
 from venus.generated.server.resources.commons.errors import UnauthorizedError
+from venus.generated.server.resources.registry.service.service import (
+    AbstractRegistryService,
+)
 from venus.generated.server.security import ApiAuth
 from venus.global_dependencies import get_auth0
 from venus.global_dependencies import get_nursery_client
@@ -17,7 +20,7 @@ from venus.nursery_owner_data import read_nursery_org_data
 from venus.utils import is_member_of_org
 
 
-class RegistryService(fern.AbstractRegistryService):
+class RegistryService(AbstractRegistryService):
     def generate_registry_tokens(
         self,
         body: fern.GenerateRegistryTokensRequest,

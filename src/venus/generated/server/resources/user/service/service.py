@@ -18,8 +18,7 @@ from ..types.user import User
 
 class AbstractUserService(AbstractFernService):
     """
-    AbstractUserService is an abstract class containing the methods that your
-    UserService implementation should implement.
+    AbstractUserService is an abstract class containing the methods that you should implement.
 
     Each method is associated with an API route, which will be registered
     with FastAPI when you register your implementation using Fern's register()

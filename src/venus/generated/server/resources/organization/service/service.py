@@ -24,8 +24,7 @@ from .update_organization_request import UpdateOrganizationRequest
 
 class AbstractOrganizationService(AbstractFernService):
     """
-    AbstractOrganizationService is an abstract class containing the methods that your
-    OrganizationService implementation should implement.
+    AbstractOrganizationService is an abstract class containing the methods that you should implement.
 
     Each method is associated with an API route, which will be registered
     with FastAPI when you register your implementation using Fern's register()
