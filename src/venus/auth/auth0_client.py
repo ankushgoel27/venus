@@ -83,7 +83,7 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
     def get_orgs_for_user(self, *, user_id: str) -> typing.Set[str]:
         # TODO(dsinghvi): Fix, page through all orgs
         list_organizatins_response = self.auth0.users.list_organizations(
-            user_id
+            user_id, per_page=50
         )
         organization_ids = set()
         for organization in list_organizatins_response["organizations"]:
