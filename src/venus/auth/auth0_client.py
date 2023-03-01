@@ -16,6 +16,7 @@ from auth0.v3.management import Auth0
 
 from venus.config import VenusConfig
 from venus.generated.server.resources.commons import UnauthorizedError
+from venus.generated.server.resources.organization import LightweightUser
 from venus.generated.server.resources.organization import (
     OrganizationAlreadyExistsError,
 )
@@ -45,6 +46,12 @@ class AbstractVenusAuth0Client(ABC):
 
     @abstractmethod
     def get_all_raw_users(self) -> typing.Generator[typing.Any, None, None]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_users_for_org(
+        self, *, org_id: str
+    ) -> typing.List[LightweightUser]:
         raise NotImplementedError
 
 
@@ -105,6 +112,21 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
         for page in range(1, math.ceil(total_users / page_size)):
             for u in self.auth0.users.list(page=page)["users"]:
                 yield u
+
+    def get_users_for_org(
+        self, *, org_id: str
+    ) -> typing.List[LightweightUser]:
+        users_list = self.auth0.organizations.all_organization_members(org_id)
+        result: typing.List[LightweightUser] = []
+        for user in users_list:
+            result.append(
+                LightweightUser(
+                    user_id=user["user_id"],
+                    picture_url=user["picture"],
+                    display_name=user["name"],
+                )
+            )
+        return result
 
 
 class AbstractAuth0Client(ABC):

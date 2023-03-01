@@ -8,6 +8,13 @@ types:
     properties:
       organizationId: commons.OrganizationId
       artifactReadRequiresToken: boolean
+      users: list<LightweightUser>
+
+  LightweightUser:
+    properties:
+      userId: string
+      displayName: string
+      picture_url: optional<string>
 
 service:
   auth: false # TODO make true

@@ -101,21 +101,31 @@ class OrganizationsService(AbstractOrganizationService):
     def get(
         self,
         org_id: str,
+        auth0_client: Auth0Client = Depends(get_auth0),
         nursery_client: NurseryApiClient = Depends(get_nursery_client),
     ) -> fern.Organization:
-        return get_owner(owner_id=org_id, nursery_client=nursery_client)
+        return get_owner(
+            owner_id=org_id,
+            nursery_client=nursery_client,
+            auth0_client=auth0_client,
+        )
 
     def get_my_organization_from_scoped_token(
         self,
         *,
         auth: ApiAuth,
+        auth0_client: Auth0Client = Depends(get_auth0),
         nursery_client: NurseryApiClient = Depends(get_nursery_client),
     ) -> Organization:
         owner_id = get_owner_id_from_token(
             auth=auth, nursery_client=nursery_client
         )
         logging.debug(f"Token has owner id {owner_id}")
-        return get_owner(owner_id=owner_id, nursery_client=nursery_client)
+        return get_owner(
+            owner_id=owner_id,
+            nursery_client=nursery_client,
+            auth0_client=auth0_client,
+        )
 
     def add_user(
         self,

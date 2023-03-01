@@ -5,6 +5,7 @@ from .commons import OrganizationId, UnauthorizedError, UserId, UserIdDoesNotExi
 from .organization import (
     AddUserToOrgRequest,
     CreateOrganizationRequest,
+    LightweightUser,
     Organization,
     OrganizationAlreadyExistsError,
     UpdateOrganizationRequest,
@@ -26,6 +27,7 @@ __all__ = [
     "CheckRegistryPermissionRequest",
     "CreateOrganizationRequest",
     "GenerateRegistryTokensRequest",
+    "LightweightUser",
     "MavenRegistryToken",
     "NpmRegistryToken",
     "Organization",

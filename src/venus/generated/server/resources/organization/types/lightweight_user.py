@@ -7,19 +7,17 @@ import pydantic
 import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
-from ...commons.types.organization_id import OrganizationId
-from .lightweight_user import LightweightUser
 
 
-class Organization(pydantic.BaseModel):
-    organization_id: OrganizationId = pydantic.Field(alias="organizationId")
-    artifact_read_requires_token: bool = pydantic.Field(alias="artifactReadRequiresToken")
-    users: typing.List[LightweightUser]
+class LightweightUser(pydantic.BaseModel):
+    user_id: str = pydantic.Field(alias="userId")
+    display_name: str = pydantic.Field(alias="displayName")
+    picture_url: typing.Optional[str]
 
     class Partial(typing_extensions.TypedDict):
-        organization_id: typing_extensions.NotRequired[OrganizationId]
-        artifact_read_requires_token: typing_extensions.NotRequired[bool]
-        users: typing_extensions.NotRequired[typing.List[LightweightUser]]
+        user_id: typing_extensions.NotRequired[str]
+        display_name: typing_extensions.NotRequired[str]
+        picture_url: typing_extensions.NotRequired[typing.Optional[str]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
