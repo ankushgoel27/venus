@@ -20,7 +20,7 @@ from venus.generated.server.resources.organization import LightweightUser
 from venus.generated.server.resources.organization import (
     OrganizationAlreadyExistsError,
 )
-from venus.generated.server.resources.user.types.user import User
+from venus.generated.server.resources.user import User
 
 
 class AbstractVenusAuth0Client(ABC):
@@ -116,7 +116,9 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
     def get_users_for_org(
         self, *, org_id: str
     ) -> typing.List[LightweightUser]:
-        users_list = self.auth0.organizations.all_organization_members(org_id)
+        users_list = self.auth0.organizations.all_organization_members(org_id)[
+            "members"
+        ]
         result: typing.List[LightweightUser] = []
         for user in users_list:
             result.append(

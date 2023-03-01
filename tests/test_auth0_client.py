@@ -66,3 +66,12 @@ def test_auth0_get_all_users() -> None:
     user_generator = auth0_client.get().get_all_raw_users()
     for user in user_generator:
         print(user)
+
+
+@pytest.mark.skip(reason="requires hitting auth0")
+def test_auth0_get_all_users_for_org() -> None:
+    auth0_client = Auth0Client(config=VENUS_CONFIG)
+    org_id = "YOUR_ORG_ID_HERE"
+    lightweight_users = auth0_client.get().get_users_for_org(org_id=org_id)
+    for user in lightweight_users:
+        print(user)
