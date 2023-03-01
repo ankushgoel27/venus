@@ -17,7 +17,7 @@ groups:
           coordinate: com.fern.fern:venus-api-sdk
           username: fern
       - name: fernapi/fern-typescript-sdk
-        version: 0.0.279
+        version: 0.2.2
         output:
           location: npm
           package-name: '@fern-api/venus-api-sdk'
