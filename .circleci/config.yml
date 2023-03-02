@@ -194,6 +194,7 @@ workflows:
             - fern-dev
             - venus-dev
             - posthog
+            - fern-tokens
           requires:
             - check
             - test
@@ -211,6 +212,7 @@ workflows:
             - fern-prod
             - venus-prod
             - posthog
+            - fern-tokens
           requires:
             - check
             - test
