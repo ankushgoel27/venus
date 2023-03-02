@@ -4,6 +4,7 @@ import typing
 
 from abc import ABC
 from abc import abstractmethod
+from dataclasses import dataclass
 from datetime import datetime
 from datetime import timedelta
 from typing import Optional
@@ -21,6 +22,11 @@ from venus.generated.server.resources.organization import (
     OrganizationAlreadyExistsError,
 )
 from venus.generated.server.resources.user import User
+
+
+@dataclass
+class Auth0Org:
+    display_name: str
 
 
 class AbstractVenusAuth0Client(ABC):
@@ -52,6 +58,10 @@ class AbstractVenusAuth0Client(ABC):
     def get_users_for_org(
         self, *, org_id: str
     ) -> typing.List[LightweightUser]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_org(self, *, org_id: str) -> Auth0Org:
         raise NotImplementedError
 
 
@@ -129,6 +139,10 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
                 )
             )
         return result
+
+    def get_org(self, *, org_id: str) -> Auth0Org:
+        auth0_org = self.auth0.organizations.get_organization(org_id)
+        return Auth0Org(display_name=auth0_org["display_name"])
 
 
 class AbstractAuth0Client(ABC):

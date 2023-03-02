@@ -13,11 +13,13 @@ from .lightweight_user import LightweightUser
 
 class Organization(pydantic.BaseModel):
     organization_id: OrganizationId = pydantic.Field(alias="organizationId")
+    display_name: str = pydantic.Field(alias="displayName")
     artifact_read_requires_token: bool = pydantic.Field(alias="artifactReadRequiresToken")
     users: typing.List[LightweightUser]
 
     class Partial(typing_extensions.TypedDict):
         organization_id: typing_extensions.NotRequired[OrganizationId]
+        display_name: typing_extensions.NotRequired[str]
         artifact_read_requires_token: typing_extensions.NotRequired[bool]
         users: typing_extensions.NotRequired[typing.List[LightweightUser]]
 

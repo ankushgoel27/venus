@@ -91,10 +91,12 @@ def get_owner(
     lightweight_users = auth0_client.get().get_users_for_org(
         org_id=org_data.auth0_id
     )
+    auth0_org = auth0_client.get().get_org(org_id=org_data.auth0_id)
     return Organization(
         organization_id=fern_commons.OrganizationId.from_str(owner_id),
         artifact_read_requires_token=org_data.artifact_read_requires_token,
         users=lightweight_users,
+        display_name=auth0_org.display_name,
     )
 
 

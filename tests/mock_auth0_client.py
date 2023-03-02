@@ -5,6 +5,7 @@ from uuid import uuid4
 
 from venus.auth.auth0_client import AbstractAuth0Client
 from venus.auth.auth0_client import AbstractVenusAuth0Client
+from venus.auth.auth0_client import Auth0Org
 from venus.generated.server.resources.organization import LightweightUser
 from venus.generated.server.resources.user.types.user import User
 
@@ -44,6 +45,9 @@ class MockVenusAuth0Client(AbstractVenusAuth0Client):
         self, *, org_id: str
     ) -> typing.List[LightweightUser]:
         return []
+
+    def get_org(self, *, org_id: str) -> Auth0Org:
+        return Auth0Org(display_name="Dummy")
 
 
 class MockAuth0Client(AbstractAuth0Client):
