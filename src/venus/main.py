@@ -22,6 +22,7 @@ app.add_middleware(
         "https://app.buildwithfern.com",
         "https://www.app-dev.buildwithfern.com",
         "https://app-dev.buildwithfern.com",
+        "https://*.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
