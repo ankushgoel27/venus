@@ -101,6 +101,11 @@ jobs:
             cd deploy
             npm install
             VERSION="${git_version}" npm run cdk deploy venus-dev --require-approval never --progress events
+      - run: 
+          name: fern register --environment Dev
+          command: |
+            npm install -g fern-api
+            fern register-v2 --environment Dev
   
   deploy-prod:
     machine:
@@ -116,6 +121,22 @@ jobs:
             cd deploy
             npm install
             VERSION="${git_version}" npm run cdk deploy venus-prod --require-approval never --progress events
+      - run: 
+          name: fern register --environment Production
+          command: |
+            npm install -g fern-api
+            fern register-v2 --environment Production
+
+  register-latest: 
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout
+      - run: 
+          name: fern register latest
+          command: |
+            npm install -g fern-api
+            fern register-v2
 
 workflows:
   version: 2
@@ -203,3 +224,13 @@ workflows:
                 - /.*/
           context:
             - docker-hub
+
+      - register-latest: 
+          filters:
+            branches:
+              only:
+                - main
+          context:
+            - fern-tokens
+          requires:
+            - check
