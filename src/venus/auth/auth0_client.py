@@ -24,45 +24,51 @@ from venus.generated.server.resources.organization import (
 from venus.generated.server.resources.user import User
 
 
-@dataclass
+@dataclass(frozen=True)
 class Auth0Org:
+    id: str
+    name: str
     display_name: str
 
 
 class AbstractVenusAuth0Client(ABC):
     @abstractmethod
     def create_organization(self, *, org_id: str) -> str:
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     def get_user(self, *, user_id: str) -> User:
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     def get_raw_user(self, *, user_id: str) -> typing.Any:
-        raise NotImplementedError
+        ...
 
     @abstractmethod
-    def get_orgs_for_user(self, *, user_id: str) -> typing.Set[str]:
-        raise NotImplementedError
+    def get_orgs_for_user(self, *, user_id: str) -> typing.Set[Auth0Org]:
+        ...
+
+    @abstractmethod
+    def get_org_ids_for_user(self, *, user_id: str) -> typing.Set[str]:
+        ...
 
     @abstractmethod
     def add_user_to_org(self, *, user_id: str, org_id: str) -> None:
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     def get_all_raw_users(self) -> typing.Generator[typing.Any, None, None]:
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     def get_users_for_org(
         self, *, org_id: str
     ) -> typing.List[LightweightUser]:
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     def get_org(self, *, org_id: str) -> Auth0Org:
-        raise NotImplementedError
+        ...
 
 
 class VenusAuth0Client(AbstractVenusAuth0Client):
@@ -97,16 +103,22 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
     def get_raw_user(self, *, user_id: str) -> typing.Any:
         return self.auth0.users.get(user_id)
 
-    def get_orgs_for_user(self, *, user_id: str) -> typing.Set[str]:
+    def get_orgs_for_user(self, *, user_id: str) -> typing.Set[Auth0Org]:
         # TODO(dsinghvi): Fix, page through all orgs
         list_organizations_response = self.auth0.users.list_organizations(
             user_id, per_page=50
         )
-        organization_ids = set()
-        for organization in list_organizations_response["organizations"]:
-            # we use the organization name as the identifier
-            organization_ids.add(organization["name"])
-        return organization_ids
+        return {
+            Auth0Org(
+                id=auth0_org["id"],
+                name=auth0_org["name"],
+                display_name=auth0_org["display_name"],
+            )
+            for auth0_org in list_organizations_response["organizations"]
+        }
+
+    def get_org_ids_for_user(self, *, user_id: str) -> typing.Set[str]:
+        return {org.id for org in self.get_orgs_for_user(user_id=user_id)}
 
     def add_user_to_org(self, *, user_id: str, org_id: str) -> None:
         self.auth0.organizations.create_organization_members(
@@ -143,7 +155,11 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
 
     def get_org(self, *, org_id: str) -> Auth0Org:
         auth0_org = self.auth0.organizations.get_organization(org_id)
-        return Auth0Org(display_name=auth0_org["display_name"])
+        return Auth0Org(
+            id=auth0_org["id"],
+            name=auth0_org["name"],
+            display_name=auth0_org["display_name"],
+        )
 
 
 class AbstractAuth0Client(ABC):

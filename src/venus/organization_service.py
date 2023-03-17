@@ -136,7 +136,7 @@ class OrganizationsService(AbstractOrganizationService):
         nursery_client: NurseryApiClient = Depends(get_nursery_client),
     ) -> None:
         user_id = auth0_client.get_user_id_from_token(auth.token)
-        user_org_ids = auth0_client.get().get_orgs_for_user(user_id=user_id)
+        user_org_ids = auth0_client.get().get_org_ids_for_user(user_id=user_id)
         if body.org_id.get_as_str() not in user_org_ids:
             raise UnauthorizedError()
         nursery_owner_data = get_nursery_owner(

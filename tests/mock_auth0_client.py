@@ -11,7 +11,7 @@ from venus.generated.server.resources.user.types.user import User
 
 
 org_id_to_auth0_id: Dict[str, str] = {}
-auth0_org_id_to_members: Dict[str, list[str]] = {}
+auth0_org_id_to_members: Dict[str, typing.List[str]] = {}
 
 
 class MockVenusAuth0Client(AbstractVenusAuth0Client):
@@ -30,7 +30,13 @@ class MockVenusAuth0Client(AbstractVenusAuth0Client):
     def get_raw_user(self, *, user_id: str) -> typing.Any:
         return None
 
-    def get_orgs_for_user(self, *, user_id: str) -> typing.Set[str]:
+    def get_orgs_for_user(self, *, user_id: str) -> typing.Set[Auth0Org]:
+        return {
+            Auth0Org(id="dummy-id", name="Dummy", display_name="Dummy")
+            for org_id in self.get_org_ids_for_user(user_id=user_id)
+        }
+
+    def get_org_ids_for_user(self, *, user_id: str) -> typing.Set[str]:
         return set(auth0_org_id_to_members.keys())
 
     def add_user_to_org(self, *, user_id: str, org_id: str) -> None:
@@ -47,7 +53,7 @@ class MockVenusAuth0Client(AbstractVenusAuth0Client):
         return []
 
     def get_org(self, *, org_id: str) -> Auth0Org:
-        return Auth0Org(display_name="Dummy")
+        return Auth0Org(id=org_id, name="Dummy", display_name="Dummy")
 
 
 class MockAuth0Client(AbstractAuth0Client):

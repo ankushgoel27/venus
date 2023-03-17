@@ -34,10 +34,12 @@ class UserService(AbstractUserService):
         self, *, page_id: int, auth: ApiAuth
     ) -> OrganizationsPage:
         user_id = self.auth0_client.get_user_id_from_token(auth.token)
-        org_ids = self.auth0_client.get().get_orgs_for_user(user_id=user_id)
+        orgs = self.auth0_client.get().get_orgs_for_user(user_id=user_id)
         return OrganizationsPage(
             organizations=[
-                OrganizationId.from_str(org_id) for org_id in org_ids
+                # in the API, we use the org name as the identifier
+                OrganizationId.from_str(org.name)
+                for org in orgs
             ],
             next_page=None,
         )
