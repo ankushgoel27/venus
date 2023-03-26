@@ -15,7 +15,7 @@ def is_responsive(url: str):  # type: ignore
     try:
         response = requests.get(url)
         print(response)
-        if response.status_code == 204:
+        if response.status_code >= 200 and response.status_code < 300:
             return True
     except Exception:
         return False

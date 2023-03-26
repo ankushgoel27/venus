@@ -7,6 +7,11 @@ groups:
         output:
           location: local-file-system
           path: ../../src/venus/generated/server
+      - name: fernapi/fern-python-sdk
+        version: 0.0.52-9-g88d3df70
+        output:
+          location: local-file-system
+          path: ../../src/venus/generated/client
   sdks:
     generators:
       - name: fernapi/fern-java-sdk

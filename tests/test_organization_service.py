@@ -1,29 +1,40 @@
+from multiprocessing import Process
+from typing import Generator
 from uuid import uuid4
 
-from fastapi.testclient import TestClient
+import pytest
 
+from venus.generated.client.client.client import FernVenusApi
 from venus.global_dependencies import get_auth0
 from venus.global_dependencies import get_nursery_client
 from venus.main import app
+from venus.main import start_server
 
 from .mock_auth0_client import MockAuth0Client
 
 
-client = TestClient(app)
+client = FernVenusApi(environment="http://localhost:8080")
 
 
 app.dependency_overrides[get_auth0] = lambda: MockAuth0Client()
 
 
+@pytest.fixture
+def server() -> Generator[None, None, None]:
+    """
+    https://stackoverflow.com/a/57816608/4238485
+    """
+    proc = Process(target=start_server, args=(), daemon=True)
+    proc.start()
+    yield
+    proc.kill()  # Cleanup after test
+
+
 def test_create_and_update_org(nursery_docker):  # type: ignore
     # create_org
     org_id = str(uuid4())
-    create_org_response = client.post(
-        "/organizations/create",
-        json={"organizationId": org_id},
-        headers={"Authorization": "Bearer dummy"},
-    )
-    assert create_org_response.status_code == 204
+    client.organization.create(organization_id=org_id)
+
     # get org from nursery
     get_owner_response = get_nursery_client().owner.get(owner_id=org_id)
     if get_owner_response.ok:
@@ -37,11 +48,10 @@ def test_create_and_update_org(nursery_docker):  # type: ignore
         )
 
     # update_org
-    update_org_response = client.post(
-        f"/organizations/{org_id}/update",
-        json={"artifactReadRequiresToken": True},
+    client.organization.update(
+        org_id=org_id, artifact_read_requires_token=True
     )
-    assert update_org_response.status_code == 204
+
     # get org from nursery
     get_owner_response = get_nursery_client().owner.get(owner_id=org_id)
     if get_owner_response.ok:

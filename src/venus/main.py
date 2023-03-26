@@ -47,7 +47,7 @@ async def app_startup() -> None:
     asyncio.create_task(get_posthog_identity_updater().update_identities())
 
 
-def start() -> None:
+def start_server() -> None:
     """Launched with `poetry run start` at root level"""
 
     uvicorn.run(
@@ -58,5 +58,7 @@ def start() -> None:
     )
 
 
+start = start_server
+
 if __name__ == "__main__":
-    start()
+    start_server()
