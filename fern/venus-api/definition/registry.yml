@@ -8,6 +8,7 @@ types:
     properties:
       npm: NpmRegistryToken
       maven: MavenRegistryToken
+      pypi: PypiRegistryToken
 
   NpmRegistryToken:
     properties:
@@ -18,10 +19,16 @@ types:
       username: string
       password: string
 
+  PypiRegistryToken:
+    properties:
+      username: string
+      password: string
+
   RegistryToken:
     union:
       npm: NpmRegistryToken
       maven: MavenRegistryToken
+      pypi: PypiRegistryToken
 
 service:
   auth: true

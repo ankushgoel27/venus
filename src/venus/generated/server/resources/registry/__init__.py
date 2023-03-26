@@ -2,7 +2,7 @@
 
 from .errors import OrganizationNotFoundError
 from .service import CheckRegistryPermissionRequest, GenerateRegistryTokensRequest, RevokeTokenRequest
-from .types import MavenRegistryToken, NpmRegistryToken, RegistryToken, RegistryTokens
+from .types import MavenRegistryToken, NpmRegistryToken, PypiRegistryToken, RegistryToken, RegistryTokens
 
 __all__ = [
     "CheckRegistryPermissionRequest",
@@ -10,6 +10,7 @@ __all__ = [
     "MavenRegistryToken",
     "NpmRegistryToken",
     "OrganizationNotFoundError",
+    "PypiRegistryToken",
     "RegistryToken",
     "RegistryTokens",
     "RevokeTokenRequest",

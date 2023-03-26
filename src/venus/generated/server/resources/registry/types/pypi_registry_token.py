@@ -7,20 +7,15 @@ import pydantic
 import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
-from .maven_registry_token import MavenRegistryToken
-from .npm_registry_token import NpmRegistryToken
-from .pypi_registry_token import PypiRegistryToken
 
 
-class RegistryTokens(pydantic.BaseModel):
-    npm: NpmRegistryToken
-    maven: MavenRegistryToken
-    pypi: PypiRegistryToken
+class PypiRegistryToken(pydantic.BaseModel):
+    username: str
+    password: str
 
     class Partial(typing_extensions.TypedDict):
-        npm: typing_extensions.NotRequired[NpmRegistryToken]
-        maven: typing_extensions.NotRequired[MavenRegistryToken]
-        pypi: typing_extensions.NotRequired[PypiRegistryToken]
+        username: typing_extensions.NotRequired[str]
+        password: typing_extensions.NotRequired[str]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

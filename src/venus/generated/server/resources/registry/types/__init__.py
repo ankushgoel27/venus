@@ -2,7 +2,8 @@
 
 from .maven_registry_token import MavenRegistryToken
 from .npm_registry_token import NpmRegistryToken
+from .pypi_registry_token import PypiRegistryToken
 from .registry_token import RegistryToken
 from .registry_tokens import RegistryTokens
 
-__all__ = ["MavenRegistryToken", "NpmRegistryToken", "RegistryToken", "RegistryTokens"]
+__all__ = ["MavenRegistryToken", "NpmRegistryToken", "PypiRegistryToken", "RegistryToken", "RegistryTokens"]

@@ -50,6 +50,10 @@ class RegistryService(AbstractRegistryService):
                     username=body.organization_id.get_as_str(),
                     password=create_token_response.body.token,
                 ),
+                pypi=fern.PypiRegistryToken(
+                    username=body.organization_id.get_as_str(),
+                    password=create_token_response.body.token,
+                ),
             )
         else:
             raise Exception(
@@ -74,7 +78,9 @@ class RegistryService(AbstractRegistryService):
             raise Exception("Token is required to auth")
         else:
             token = body.token.visit(
-                lambda npm: npm.token, lambda maven: maven.password
+                lambda npm: npm.token,
+                lambda maven: maven.password,
+                lambda pypi: pypi.password,
             )
             token_metadata_response = nursery_client.token.get_token_metadata(
                 body=GetTokenMetadataRequest(token=token)

@@ -11,6 +11,7 @@ import typing_extensions
 from ....core.datetime_utils import serialize_datetime
 from .maven_registry_token import MavenRegistryToken
 from .npm_registry_token import NpmRegistryToken
+from .pypi_registry_token import PypiRegistryToken
 
 T_Result = typing.TypeVar("T_Result")
 
@@ -22,23 +23,32 @@ class _Factory:
     def maven(self, value: MavenRegistryToken) -> RegistryToken:
         return RegistryToken(__root__=_RegistryToken.Maven(**dict(value), type="maven"))
 
+    def pypi(self, value: PypiRegistryToken) -> RegistryToken:
+        return RegistryToken(__root__=_RegistryToken.Pypi(**dict(value), type="pypi"))
+
 
 class RegistryToken(pydantic.BaseModel):
     factory: typing.ClassVar[_Factory] = _Factory()
 
-    def get_as_union(self) -> typing.Union[_RegistryToken.Npm, _RegistryToken.Maven]:
+    def get_as_union(self) -> typing.Union[_RegistryToken.Npm, _RegistryToken.Maven, _RegistryToken.Pypi]:
         return self.__root__
 
     def visit(
-        self, npm: typing.Callable[[NpmRegistryToken], T_Result], maven: typing.Callable[[MavenRegistryToken], T_Result]
+        self,
+        npm: typing.Callable[[NpmRegistryToken], T_Result],
+        maven: typing.Callable[[MavenRegistryToken], T_Result],
+        pypi: typing.Callable[[PypiRegistryToken], T_Result],
     ) -> T_Result:
         if self.__root__.type == "npm":
             return npm(self.__root__)
         if self.__root__.type == "maven":
             return maven(self.__root__)
+        if self.__root__.type == "pypi":
+            return pypi(self.__root__)
 
     __root__: typing_extensions.Annotated[
-        typing.Union[_RegistryToken.Npm, _RegistryToken.Maven], pydantic.Field(discriminator="type")
+        typing.Union[_RegistryToken.Npm, _RegistryToken.Maven, _RegistryToken.Pypi],
+        pydantic.Field(discriminator="type"),
     ]
 
     def json(self, **kwargs: typing.Any) -> str:
@@ -64,6 +74,12 @@ class _RegistryToken:
 
     class Maven(MavenRegistryToken):
         type: typing_extensions.Literal["maven"]
+
+        class Config:
+            frozen = True
+
+    class Pypi(PypiRegistryToken):
+        type: typing_extensions.Literal["pypi"]
 
         class Config:
             frozen = True
