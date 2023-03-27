@@ -1,6 +1,5 @@
 from fastapi import Depends
-from fern.nursery.pydantic.token import CreateTokenRequest
-from fern.nursery.pydantic.token import RevokeTokenRequest
+from fern.nursery.client import FernNursery
 
 import venus.generated.server.resources as fern
 
@@ -12,10 +11,6 @@ from venus.generated.server.resources.registry.service.service import (
 from venus.generated.server.security import ApiAuth
 from venus.global_dependencies import get_auth0
 from venus.global_dependencies import get_nursery_client
-from venus.nursery.client import NurseryApiClient
-from venus.nursery.resources.token.types.get_token_metadata_request import (
-    GetTokenMetadataRequest,
-)
 from venus.nursery_owner_data import read_nursery_org_data
 from venus.utils import is_member_of_org
 
@@ -25,7 +20,7 @@ class RegistryService(AbstractRegistryService):
         self,
         body: fern.GenerateRegistryTokensRequest,
         auth: ApiAuth,
-        nursery_client: NurseryApiClient = Depends(get_nursery_client),
+        nursery_client: FernNursery = Depends(get_nursery_client),
         auth0_client: Auth0Client = Depends(get_auth0),
     ) -> fern.RegistryTokens:
         is_member = is_member_of_org(
@@ -36,42 +31,40 @@ class RegistryService(AbstractRegistryService):
         )
         if not is_member:
             raise UnauthorizedError()
-        create_token_response = nursery_client.token.create(
-            body=CreateTokenRequest(
-                owner_id=body.organization_id.get_as_str(), prefix="fern"
+        try:
+            create_token_response = nursery_client.token.create(
+                owner_id=body.organization_id.get_as_str(),
+                prefix="fern",
             )
-        )
-        if create_token_response.ok:
-            return fern.RegistryTokens(
-                npm=fern.NpmRegistryToken(
-                    token=create_token_response.body.token
-                ),
-                maven=fern.MavenRegistryToken(
-                    username=body.organization_id.get_as_str(),
-                    password=create_token_response.body.token,
-                ),
-                pypi=fern.PypiRegistryToken(
-                    username=body.organization_id.get_as_str(),
-                    password=create_token_response.body.token,
-                ),
-            )
-        else:
+        except Exception as error:
             raise Exception(
                 f"Failed to generate token for org: {body.organization_id}",
-                create_token_response.error,
+                error,
             )
+        return fern.RegistryTokens(
+            npm=fern.NpmRegistryToken(token=create_token_response.token),
+            maven=fern.MavenRegistryToken(
+                username=body.organization_id.get_as_str(),
+                password=create_token_response.token,
+            ),
+            pypi=fern.PypiRegistryToken(
+                username=body.organization_id.get_as_str(),
+                password=create_token_response.token,
+            ),
+        )
 
     def has_registry_permission(
         self,
         body: fern.CheckRegistryPermissionRequest,
-        nursery_client: NurseryApiClient = Depends(get_nursery_client),
+        nursery_client: FernNursery = Depends(get_nursery_client),
     ) -> bool:
-        get_owner_response = nursery_client.owner.get(
-            owner_id=body.organization_id.get_as_str()
-        )
-        if not get_owner_response.ok:
+        try:
+            get_owner_response = nursery_client.owner.get(
+                owner_id=body.organization_id.get_as_str()
+            )
+        except Exception:
             raise Exception("Failed to load organization")
-        nursery_org_data = read_nursery_org_data(get_owner_response.body.data)
+        nursery_org_data = read_nursery_org_data(get_owner_response.data)
         if not nursery_org_data.artifact_read_requires_token:
             return True
         elif body.token is None:
@@ -82,20 +75,20 @@ class RegistryService(AbstractRegistryService):
                 lambda maven: maven.password,
                 lambda pypi: pypi.password,
             )
-            token_metadata_response = nursery_client.token.get_token_metadata(
-                body=GetTokenMetadataRequest(token=token)
-            )
-            if token_metadata_response.ok:
-                status = token_metadata_response.body.status.get_as_union()
-                return status.type == "active"
-            else:
+            try:
+                token_metadata_response = (
+                    nursery_client.token.get_token_metadata(token=token)
+                )
+            except Exception:
                 return False
+            status = token_metadata_response.status.get_as_union()
+            return status.type == "active"
 
     def revoke_token(
         self,
         body: fern.RevokeTokenRequest,
         auth: ApiAuth,
-        nursery_client: NurseryApiClient = Depends(get_nursery_client),
+        nursery_client: FernNursery = Depends(get_nursery_client),
         auth0_client: Auth0Client = Depends(get_auth0),
     ) -> None:
         is_member = is_member_of_org(
@@ -106,6 +99,4 @@ class RegistryService(AbstractRegistryService):
         )
         if not is_member:
             raise UnauthorizedError()
-        nursery_client.token.revoke_token(
-            body=RevokeTokenRequest(token=body.token)
-        )
+        nursery_client.token.revoke_token(token=body.token)

@@ -1,4 +1,5 @@
 from fastapi import Depends
+from fern.nursery.client import FernNursery
 
 from venus.auth.auth0_client import Auth0Client
 from venus.generated.server.resources.commons.types.organization_id import (
@@ -14,14 +15,13 @@ from venus.generated.server.resources.user.types.user import User
 from venus.generated.server.security import ApiAuth
 from venus.global_dependencies import get_auth0
 from venus.global_dependencies import get_nursery_client
-from venus.nursery.client import NurseryApiClient
 
 
 class UserService(AbstractUserService):
     def __init__(
         self,
         auth0_client: Auth0Client = Depends(get_auth0),
-        nursery_client: NurseryApiClient = Depends(get_nursery_client),
+        nursery_client: FernNursery = Depends(get_nursery_client),
     ) -> None:
         self.nursery_client = nursery_client
         self.auth0_client = auth0_client

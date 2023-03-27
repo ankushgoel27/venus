@@ -6,7 +6,6 @@ from fastapi.testclient import TestClient
 
 from tests.mock_auth0_client import MockAuth0Client
 from venus.global_dependencies import get_auth0
-from venus.global_dependencies import get_nursery_client
 from venus.main import app
 
 from .http_utils import assert_valid_status_code
@@ -14,7 +13,6 @@ from .http_utils import assert_valid_status_code
 
 client = TestClient(app)
 app.dependency_overrides[get_auth0] = lambda: MockAuth0Client()
-nursery_client = get_nursery_client()
 
 
 def test_generate_and_use_token(nursery_docker) -> None:  # type: ignore

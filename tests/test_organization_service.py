@@ -26,15 +26,8 @@ def test_create_and_update_org(nursery_docker):  # type: ignore
     assert create_org_response.status_code == 204
     # get org from nursery
     get_owner_response = get_nursery_client().owner.get(owner_id=org_id)
-    if get_owner_response.ok:
-        print("get_owner_response", get_owner_response.body)
-        assert (
-            get_owner_response.body.data["artifactReadRequiresToken"] is False
-        )
-    else:
-        raise Exception(
-            "Failed to get owner from nursery", get_owner_response.error
-        )
+    print("get_owner_response", get_owner_response)
+    assert get_owner_response.data["artifactReadRequiresToken"] is False
 
     # update_org
     update_org_response = client.post(
@@ -44,12 +37,5 @@ def test_create_and_update_org(nursery_docker):  # type: ignore
     assert update_org_response.status_code == 204
     # get org from nursery
     get_owner_response = get_nursery_client().owner.get(owner_id=org_id)
-    if get_owner_response.ok:
-        print("get_owner_response", get_owner_response.body)
-        assert (
-            get_owner_response.body.data["artifactReadRequiresToken"] is True
-        )
-    else:
-        raise Exception(
-            "Failed to get owner from nursery", get_owner_response.error
-        )
+    print("get_owner_response", get_owner_response)
+    assert get_owner_response.data["artifactReadRequiresToken"] is True
