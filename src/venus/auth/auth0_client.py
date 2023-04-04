@@ -73,7 +73,7 @@ class AbstractVenusAuth0Client(ABC):
 
 
 def sanitize_auth0_org_name(org_id: str) -> str:
-    return re.sub("[^a-z_-]", "", org_id)
+    return re.sub("[^a-z_-]", "", org_id).rstrip("_-")
 
 
 class VenusAuth0Client(AbstractVenusAuth0Client):

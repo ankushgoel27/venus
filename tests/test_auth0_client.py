@@ -88,3 +88,4 @@ def test_auth0_get_org() -> None:
 
 def test_sanitize_auth0_org_name() -> None:
     assert sanitize_auth0_org_name("deep 123") == "deep"
+    assert sanitize_auth0_org_name("deep-123") == "deep"
