@@ -5,6 +5,7 @@ from uuid import uuid4
 import pytest
 
 from venus.auth.auth0_client import Auth0Client
+from venus.auth.auth0_client import sanitize_auth0_org_name
 from venus.config import VenusConfig
 
 
@@ -83,3 +84,7 @@ def test_auth0_get_org() -> None:
     org_id = "org_SyfYA7Lz8OtwFTSW"
     org = auth0_client.get().get_org(org_id=org_id)
     print(org)
+
+
+def test_sanitize_auth0_org_name() -> None:
+    assert sanitize_auth0_org_name("deep 123") == "deep"
