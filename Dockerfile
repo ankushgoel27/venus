@@ -6,7 +6,7 @@ COPY ./src ./src
 
 ENV PYTHONPATH=${PYTHONPATH}:${PWD}
 
-RUN pip3 install poetry &&\
+RUN pip3 install poetry==1.4.2 &&\
   poetry config virtualenvs.create false &&\
   poetry install
 
