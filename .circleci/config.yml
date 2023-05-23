@@ -36,7 +36,7 @@ jobs:
 
   test:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.04.2
     steps:
       - checkout
       - run: curl -sSL https://install.python-poetry.org | python3 -
@@ -75,7 +75,7 @@ jobs:
   
   publish-docker: 
     machine: 
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.04.2
     steps: 
       - checkout
       - run: 
@@ -89,7 +89,7 @@ jobs:
 
   deploy-dev:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.04.2
     steps:
       - checkout
       - aws-cli/setup
@@ -109,7 +109,7 @@ jobs:
   
   deploy-prod:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.04.2
     steps:
       - checkout
       - aws-cli/setup
@@ -129,7 +129,7 @@ jobs:
 
   register-latest: 
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.04.2
     steps:
       - checkout
       - run: 
