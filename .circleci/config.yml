@@ -9,7 +9,7 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-      - run: 
+      - run:
           name: Install fern
           command: sudo npm install -g fern-api
       - run: fern check
@@ -39,22 +39,22 @@ jobs:
       image: ubuntu-2004:2023.04.2
     steps:
       - checkout
-      - run: curl -sSL https://install.python-poetry.org | python3 -
+      - run: curl -sSL https://install.python-poetry.org | python3 - --version 1.4.2
       - run: /home/circleci/.local/bin/poetry install --no-ansi
       - run:
           name: test
           command: /home/circleci/.local/bin/poetry run pytest -sv
-    
+
   generate-sdks:
     docker:
       - image: cimg/node:current
     resource_class: medium
     steps:
       - checkout
-      - run: 
+      - run:
           name: Install fern
           command: sudo npm install -g fern-api
-      - run: | 
+      - run: |
           export FERN_TOKEN="${FERN_ORG_TOKEN_PROD}"
           git_version="$(scripts/git-version.sh)"
           fern generate --group sdks --version "${git_version}" --log-level debug
@@ -65,22 +65,22 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-      - run: 
+      - run:
           name: Install fern
           command: sudo npm install -g fern-api
-      - run: | 
+      - run: |
           export FERN_TOKEN="${FERN_ORG_TOKEN_PROD}"
           git_version="$(scripts/git-version.sh)"
           fern generate --group docs --version "${git_version}" --log-level debug
-  
-  publish-docker: 
-    machine: 
+
+  publish-docker:
+    machine:
       image: ubuntu-2004:2023.04.2
-    steps: 
+    steps:
       - checkout
-      - run: 
+      - run:
           name: Publish docker
-          command: | 
+          command: |
             git_version="$(scripts/git-version.sh)"
             ./create_docker.sh "${git_version}"
             echo "$FERNAPI_DOCKER_HUB_PASSWORD" | docker login --username fernapi --password-stdin
@@ -101,12 +101,12 @@ jobs:
             cd deploy
             npm install
             VERSION="${git_version}" npm run cdk deploy venus-dev --require-approval never --progress events
-      - run: 
+      - run:
           name: fern register --environment Dev
           command: |
             npm install -g fern-api
             fern register-v2 --environment Dev
-  
+
   deploy-prod:
     machine:
       image: ubuntu-2004:2023.04.2
@@ -121,18 +121,18 @@ jobs:
             cd deploy
             npm install
             VERSION="${git_version}" npm run cdk deploy venus-prod --require-approval never --progress events
-      - run: 
+      - run:
           name: fern register --environment Production
           command: |
             npm install -g fern-api
             fern register-v2 --environment Production
 
-  register-latest: 
+  register-latest:
     machine:
       image: ubuntu-2004:2023.04.2
     steps:
       - checkout
-      - run: 
+      - run:
           name: fern register latest
           command: |
             npm install -g fern-api
@@ -144,7 +144,7 @@ workflows:
     jobs:
       - fern-check:
           filters: { tags: { only: /.*/ } }
-          context: 
+          context:
             - fern-tokens
 
 
@@ -157,27 +157,27 @@ workflows:
           filters:
             tags:
               only: /.*/
-      
-      - generate-sdks: 
+
+      - generate-sdks:
           filters:
             branches:
               only: main
             tags:
               only: /.*/
-          context: 
+          context:
             - fern-tokens
           requires:
             - check
             - test
-      
-      - generate-docs: 
+
+      - generate-docs:
           filters:
             branches:
               ignore: /.*/
             tags:
               only:
                 - /.*/
-          context: 
+          context:
             - fern-tokens
             - postman
           requires:
@@ -198,7 +198,7 @@ workflows:
           requires:
             - check
             - test
-      
+
       - deploy-prod:
           filters:
             branches:
@@ -216,8 +216,8 @@ workflows:
           requires:
             - check
             - test
-    
-      - publish-docker: 
+
+      - publish-docker:
           filters:
             branches:
               only: main
@@ -227,7 +227,7 @@ workflows:
           context:
             - docker-hub
 
-      - register-latest: 
+      - register-latest:
           filters:
             branches:
               only:
