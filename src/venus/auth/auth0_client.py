@@ -73,7 +73,27 @@ class AbstractVenusAuth0Client(ABC):
 
 
 def sanitize_auth0_org_name(org_id: str) -> str:
-    return re.sub("[^a-z_-]", "", org_id).rstrip("_-")
+    """
+    per auth0:
+        "Name" must only contain lowercase characters, '-', and '_',
+        and start with a letter or number
+    """
+
+    sanitized = org_id
+
+    # replace spaces with dashes
+    sanitized = sanitized.replace(" ", "-")
+
+    # delete everything that's not a lowercase letter, number, "-", "_"
+    sanitized = re.sub("[^a-z0-9_-]", "", sanitized)
+
+    # remove leading characters that aren't letters or numbers
+    sanitized = re.sub("^[^a-z0-9]*", "", sanitized)
+
+    # remove trailing "_", "-"
+    sanitized = sanitized.rstrip("_-")
+
+    return sanitized
 
 
 class VenusAuth0Client(AbstractVenusAuth0Client):
