@@ -10,7 +10,7 @@ groups:
   sdks:
     generators:
       - name: fernapi/fern-java-sdk
-        version: 0.2.1-rc0
+        version: 0.3.6
         output:
           location: maven
           url: maven.buildwithfern.com
