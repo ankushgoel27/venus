@@ -10,11 +10,11 @@ groups:
   sdks:
     generators:
       - name: fernapi/fern-java-sdk
-        version: 0.3.6
+        version: 0.3.8-rc5
         output:
           location: maven
           url: maven.buildwithfern.com
-          coordinate: com.fern.fern:venus-api-sdk
+          coordinate: com.fern.fern:venus-api-sdk-v2
           username: fern
       - name: fernapi/fern-typescript-sdk
         version: 0.2.2-3-g00605061
