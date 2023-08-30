@@ -2,8 +2,8 @@
 
 imports:
   commons: commons.yml
-types:
 
+types:
   Organization:
     properties:
       organizationId: commons.OrganizationId
@@ -49,6 +49,7 @@ service:
             artifactReadRequiresToken: boolean
       errors:
         - commons.UnauthorizedError
+        - OrgIdDoesNotExistError
 
     get:
       method: GET
@@ -58,6 +59,7 @@ service:
       response: Organization
       errors:
         - commons.UnauthorizedError
+        - OrgIdDoesNotExistError
 
     isMember:
       method: POST
@@ -91,7 +93,10 @@ service:
       errors:
         - commons.UnauthorizedError
         - commons.UserIdDoesNotExistError
+        - OrgIdDoesNotExistError
 
 errors:
   OrganizationAlreadyExistsError:
     status-code: 409
+  OrgIdDoesNotExistError:  
+    status-code: 404
