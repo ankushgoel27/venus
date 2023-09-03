@@ -169,9 +169,9 @@ class VenusAuth0Client(AbstractVenusAuth0Client):
     def get_users_for_org(
         self, *, org_id: str
     ) -> typing.List[LightweightUser]:
-        users_list = self.auth0.organizations.all_organization_members(org_id)[
-            "members"
-        ]
+        users_list = self.auth0.organizations.all_organization_members(
+            org_id, per_page=100
+        )["members"]
         result: typing.List[LightweightUser] = []
         for user in users_list:
             result.append(

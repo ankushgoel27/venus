@@ -35,8 +35,13 @@ def is_member_of_org(
         nursery_owner = get_nursery_owner(
             owner_id=organization_id, nursery_client=nursery_client
         )
-        org_ids = auth0_client.get().get_org_ids_for_user(user_id=user_id)
-        return nursery_owner.auth0_id in org_ids
+        users = auth0_client.get().get_users_for_org(
+            org_id=nursery_owner.auth0_id
+        )
+        for user in users:
+            if user.user_id == user_id:
+                return True
+        return False
     else:  # assume it is a legacy unprefixed nursery token
         print(
             auth.token,

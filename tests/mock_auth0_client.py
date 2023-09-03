@@ -50,7 +50,14 @@ class MockVenusAuth0Client(AbstractVenusAuth0Client):
     def get_users_for_org(
         self, *, org_id: str
     ) -> typing.List[LightweightUser]:
-        return []
+        result = []
+        for member in auth0_org_id_to_members[org_id]:
+            result.append(
+                LightweightUser(
+                    user_id=member, display_name="", picture_url=""
+                )
+            )
+        return result
 
     def get_org(self, *, org_id: str) -> Auth0Org:
         return Auth0Org(id=org_id, name="Dummy", display_name="Dummy")
