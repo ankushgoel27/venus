@@ -12,6 +12,10 @@ import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { HostedZone } from "aws-cdk-lib/aws-route53";
 import { PrivateDnsNamespace } from "aws-cdk-lib/aws-servicediscovery";
 import { Construct } from "constructs";
+import * as sns from "aws-cdk-lib/aws-sns";
+import * as cloudwatch from "aws-cdk-lib/aws-cloudwatch";
+import * as actions from "aws-cdk-lib/aws-cloudwatch-actions";
+import { EmailSubscription } from "aws-cdk-lib/aws-sns-subscriptions";
 
 const CONTAINER_NAME = "venus";
 const SERVICE_NAME = "venus";
@@ -83,6 +87,13 @@ export class VenusDeployStack extends Stack {
       environmentInfo.route53Info.certificateArn
     );
 
+    const snsTopic = new sns.Topic(this, "venus-sns-topic", {
+      topicName: id,
+    });
+    snsTopic.addSubscription(
+      new EmailSubscription("founders@buildwithfern.com")
+    );
+
     const fargateService = new ApplicationLoadBalancedFargateService(
       this,
       SERVICE_NAME,
@@ -136,6 +147,18 @@ export class VenusDeployStack extends Stack {
       path: "/health",
       port: "8080",
     });
+
+    const lbResponseTimeAlarm = new cloudwatch.Alarm(
+      this,
+      `venus-${environmentType.toLowerCase()}-lb-target-response-time-alarm`,
+      {
+        alarmName: `${id} Load Balancer Target Response Time Threshold`,
+        metric: fargateService.loadBalancer.metrics.targetResponseTime(),
+        threshold: 1,
+        evaluationPeriods: 5,
+      }
+    );
+    lbResponseTimeAlarm.addAlarmAction(new actions.SnsAction(snsTopic));
   }
 }
 
