@@ -5,7 +5,7 @@ import { VenusDeployStack } from "../lib/deploy-stack";
 import {
   Environments,
   EnvironmentType,
-} from "@fern-fern/fern-cloud-client/model/environments";
+} from "@fern-fern/fern-cloud-sdk/api/resources/environments";
 import axios from "axios";
 
 void main();
@@ -21,6 +21,9 @@ async function main() {
     switch (environmentType) {
       case EnvironmentType.Dev:
         const devInfo = environments[environmentType];
+        if (devInfo == null) {
+          throw new Error("Unexpected error: devInfo is undefined");
+        }
         new VenusDeployStack(
           app,
           `venus-${environmentType.toLowerCase()}`,
@@ -40,8 +43,35 @@ async function main() {
           }
         );
         break;
+      case EnvironmentType.Dev2:
+        const dev2Info = environments[environmentType];
+        if (dev2Info == null) {
+          throw new Error("Unexpected error: dev2Info is undefined");
+        }
+        new VenusDeployStack(
+          app,
+          `venus-${environmentType.toLowerCase()}`,
+          version,
+          environmentType,
+          dev2Info,
+          {
+            AUTH0_DOMAIN_NAME: "fern-dev.us.auth0.com",
+            AUTH0_CLIENT_ID: "8lyAgexpGrHZLhN2i1FNPSicjupACR1r",
+            AUTH0_CLIENT_SECRET: getEnvVarOrThrow("AUTH0_CLIENT_SECRET"),
+            AUTH0_MGMT_AUDIENCE: "https://fern-dev.us.auth0.com/api/v2/",
+            NURSERY_ORIGIN: `http://nursery.${dev2Info.cloudMapNamespaceInfo.namespaceName}:8080`,
+            AUTH0_VENUS_AUDIENCE: "venus-dev",
+          },
+          {
+            env: { account: "985111089818", region: "us-east-1" },
+          }
+        );
+        break;
       case EnvironmentType.Prod:
         const prodInfo = environments[environmentType];
+        if (prodInfo == null) {
+          throw new Error("Unexpected error: prodInfo is undefined");
+        }
         new VenusDeployStack(
           app,
           `venus-${environmentType.toLowerCase()}`,

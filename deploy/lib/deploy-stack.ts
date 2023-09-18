@@ -1,7 +1,7 @@
 import {
   EnvironmentInfo,
   EnvironmentType,
-} from "@fern-fern/fern-cloud-client/model/environments";
+} from "@fern-fern/fern-cloud-sdk/api/resources/environments";
 import { Stack, StackProps } from "aws-cdk-lib";
 import { Certificate } from "aws-cdk-lib/aws-certificatemanager";
 import { Peer, Port, SecurityGroup, Vpc } from "aws-cdk-lib/aws-ec2";
