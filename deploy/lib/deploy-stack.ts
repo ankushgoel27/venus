@@ -56,7 +56,7 @@ export class VenusDeployStack extends Stack {
       Port.tcp(443),
       "allow HTTPS traffic from anywhere"
     );
-    venusSg.addIngressRule(Peer.ipv4("172.31.0.0/16"), Port.allTcp());
+    venusSg.addIngressRule(Peer.ipv4(environmentInfo.vpcIpv4Cidr), Port.allTcp());
 
     const cluster = Cluster.fromClusterAttributes(this, "cluster", {
       clusterName: environmentInfo.ecsInfo.clusterName,
