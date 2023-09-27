@@ -767,13 +767,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "posthog"
-version = "2.4.0"
+version = "3.0.2"
 description = "Integrate PostHog into any python application."
 optional = false
 python-versions = "*"
 files = [
-    {file = "posthog-2.4.0-py2.py3-none-any.whl", hash = "sha256:864c41bf060b38cba0f43425f6c7f6342ee445da2b89a42d900857d7e4d34962"},
-    {file = "posthog-2.4.0.tar.gz", hash = "sha256:2db7921e376a98da30b6fe7fa8d4490aabbf108fb3e706b67860f8033f457424"},
+    {file = "posthog-3.0.2-py2.py3-none-any.whl", hash = "sha256:a8c0af6f2401fbe50f90e68c4143d0824b54e872de036b1c2f23b5abb39d88ce"},
+    {file = "posthog-3.0.2.tar.gz", hash = "sha256:701fba6e446a4de687c6e861b587e7b7741955ad624bf34fe013c06a0fec6fb3"},
 ]
 
 [package.dependencies]
@@ -784,7 +784,7 @@ requests = ">=2.7,<3.0"
 six = ">=1.5"
 
 [package.extras]
-dev = ["black", "isort", "pre-commit"]
+dev = ["black", "flake8", "flake8-print", "isort", "pre-commit"]
 sentry = ["django", "sentry-sdk"]
 test = ["coverage", "flake8", "freezegun (==0.3.15)", "mock (>=2.0.0)", "pylint", "pytest"]
 
@@ -1294,4 +1294,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "325a938003bd60fd861abddd9235efc0caec94a80d33d1491b35898797bd520a"
+content-hash = "e1f4f735c5e76072f20cf7d8899a49a1034f7ef11d288bae576af62ce3a66a15"
