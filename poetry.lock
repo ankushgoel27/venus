@@ -41,21 +41,21 @@ tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy
 
 [[package]]
 name = "auth0-python"
-version = "3.24.1"
+version = "4.4.0"
 description = "Auth0 Python SDK"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*"
+python-versions = ">=3.7"
 files = [
-    {file = "auth0-python-3.24.1.tar.gz", hash = "sha256:62c2e177b9517879bd8632da9eb7668aedd5775fddea87b0e0e1e9a89b9dd096"},
-    {file = "auth0_python-3.24.1-py2.py3-none-any.whl", hash = "sha256:87dbf603c89fcebfd35f5ba29bc8a820af72a7d5a772f53752ae04d30f191712"},
+    {file = "auth0-python-4.4.0.tar.gz", hash = "sha256:61ff3f36643281d8a4417bfdb14ba440428a77e15ca523e719b6e2f24cd5c8ba"},
+    {file = "auth0_python-4.4.0-py2.py3-none-any.whl", hash = "sha256:307330941f694ddb7a222de6e142bf31c6621bafa346e06a616e1160b9446c34"},
 ]
 
 [package.dependencies]
-pyjwt = {version = ">=1.7.1", extras = ["crypto"]}
+pyjwt = {version = ">=2.6.0", extras = ["crypto"]}
 requests = ">=2.14.0"
 
 [package.extras]
-test = ["coverage", "mock (>=1.3.0)", "pre-commit"]
+test = ["coverage", "pre-commit"]
 
 [[package]]
 name = "backoff"
@@ -1294,4 +1294,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "325a938003bd60fd861abddd9235efc0caec94a80d33d1491b35898797bd520a"
+content-hash = "495b84fe234ecbbbe3c86b48d4918c3eb07c175e88dc28ee295a77b0bfd187c3"
