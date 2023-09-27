@@ -1,7 +1,7 @@
 import logging
 
 from fastapi import Depends
-from fern.nursery.client import FernNursery
+from fern.client import FernNursery
 
 import venus.generated.server.resources.organization as fern
 

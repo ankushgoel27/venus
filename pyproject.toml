@@ -32,11 +32,11 @@ flake8 = "^5.0.4"
 pre-commit = "^2.20.0"
 pytest-env = "^0.6.2"
 pytest-docker = "^1.0.1"
-fern-fern-nursery = {version = "0.0.191", source = "fern-dev"}
+fern-fern-nursery = {version = "0.0.70", source = "fern"}
 
 [[tool.poetry.source]]
-name = "fern-dev"
-url = "https://pypi-dev.buildwithfern.com/"
+name = "fern"
+url = "https://pypi.buildwithfern.com/"
 default = false
 secondary = true
 

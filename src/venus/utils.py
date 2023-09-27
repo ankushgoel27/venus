@@ -1,6 +1,6 @@
 import logging
 
-from fern.nursery.client import FernNursery
+from fern.client import FernNursery
 
 import venus.generated.server.resources.commons as fern_commons
 

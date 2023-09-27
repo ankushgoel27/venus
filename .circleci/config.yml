@@ -87,21 +87,6 @@ jobs:
             docker tag venus:"${git_version}" fernapi/venus:"${git_version}"
             docker push fernapi/venus:"${git_version}"
 
-  deploy-dev:
-    machine:
-      image: ubuntu-2004:2023.04.2
-    steps:
-      - checkout
-      - aws-cli/setup
-      - run:
-          name: cdk deploy
-          command: |
-            git_version="$(scripts/git-version.sh)"
-            ./create_docker.sh "${git_version}"
-            cd deploy
-            npm install
-            VERSION="${git_version}" npm run cdk deploy venus-dev --require-approval never --progress events
-
   deploy-dev2:
     machine:
       image: ubuntu-2004:2023.04.2
@@ -190,21 +175,6 @@ workflows:
           context:
             - fern-tokens
             - postman
-          requires:
-            - check
-            - test
-
-      - deploy-dev:
-          filters:
-            branches:
-              only: main
-          context:
-            - aws
-            - github
-            - fern-dev
-            - venus-dev
-            - posthog
-            - fern-tokens
           requires:
             - check
             - test

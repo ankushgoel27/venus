@@ -1,6 +1,6 @@
 import functools
 
-from fern.nursery.client import FernNursery
+from fern.client import FernNursery
 
 from venus.auth.auth0_client import AbstractAuth0Client
 from venus.auth.auth0_client import Auth0Client
@@ -18,7 +18,7 @@ def get_auth0() -> AbstractAuth0Client:
 
 @functools.lru_cache()
 def get_nursery_client() -> FernNursery:
-    return FernNursery(environment=config.nursery_origin)
+    return FernNursery(base_url=config.nursery_origin)
 
 
 @functools.lru_cache()

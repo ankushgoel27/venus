@@ -1,5 +1,5 @@
 from fastapi import Depends
-from fern.nursery.client import FernNursery
+from fern.client import FernNursery
 
 from venus.auth.auth0_client import Auth0Client
 from venus.generated.server.resources.commons.types.organization_id import (
